@@ -1,0 +1,44 @@
+@import url("../../../shared/styles/styles.css");
+
+.not-available {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+.product-container {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
+    font-size: 14px;
+    
+    .product-content {
+        flex: 1;
+    }
+
+    .product-header {
+        font-weight: bold;
+        font-size: 18px;
+    }
+}
+
+.product-container button {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.product-container:not(.not-available) button {
+    cursor: pointer;
+}
+
+.product-container.not-available button:hover {
+    background-color: #007bff;
+}
+
+.not-available button:hover {
+    cursor: default;
+}
