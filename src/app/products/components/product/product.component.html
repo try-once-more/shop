@@ -1,0 +1,7 @@
+<div class="product-container" [ngClass]="{'not-available': !product.isAvailable}">
+    <div class="product-content">
+        <div class="product-header">${{ product.price }} | {{ product.name }} | {{ product.category }}</div>
+        <div>{{ product.description }}</div>
+    </div>
+    <button (click)="onAddToCart()">Buy</button>
+</div>
