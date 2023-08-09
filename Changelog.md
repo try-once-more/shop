@@ -19,4 +19,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - public CartService.totalQuantity field changed to readonly signal [`f3e39f1`](https://github.com/try-once-more/shop/commit/f3e39f1595ca48c179c5c37b68f2c3e5c4969a59)
+- Moved productsService from CartService to CartListComponent to [`756a859`](https://github.com/try-once-more/shop/commit/756a859b69ad58628655033d639e10a6b38de091)
 
