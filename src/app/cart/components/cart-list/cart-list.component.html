@@ -1,19 +1,20 @@
 <div class="cart-container">
     <div class="cart-title">Shop</div>
-    <button *ngIf="this.cartService.totalQuantity > 0; else randomButton" (click)="toggleCart()">{{ isCartPopupOpen ?
-        'Close Cart' : 'Open Cart' }} ({{ this.cartService.totalQuantity }})</button>
+    <ng-container *ngIf="this.cartService.totalQuantity() as totalQuantity; else randomButton">
+        <button (click)="toggleCart()">{{isCartPopupOpen?'Close Cart':'Open Cart'}} ({{totalQuantity}})</button>
+        <button (click)="clearCart()" class="clear-button">Clear Cart</button>
+    </ng-container>
     <ng-template #randomButton>
         <button (click)="buyRandom()" class="random-button">Buy something random to make the cart appear!</button>
     </ng-template>
-    <button *ngIf="this.cartService.totalQuantity > 0" (click)="clearCart()" class="clear-button">Clear Cart</button>
-    
 </div>
 <div *ngIf="isCartPopupOpen" class="overlay">
     <div class="popup-container">
         <ng-container *ngFor="let category of getCategories()" class="cart-title">
             <div>List of {{category}}</div>
             <ul>
-                <li *ngFor="let item of getByCategory(category); trackBy:trackByName">{{item[0].name}} - {{item[1]}}</li>
+                <li *ngFor="let item of getByCategory(category); trackBy:trackByName">{{item[0].name}} - {{item[1]}}
+                </li>
             </ul>
         </ng-container>
     </div>

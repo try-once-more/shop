@@ -33,7 +33,6 @@ export class ProductsService {
         };
     }
 
-
     private generateRandomString(length: number): string {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let randomString = '';
