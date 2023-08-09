@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CartService } from "../../services/cart.service";
 import { ProductModel } from "src/app/products/models/product.model";
 import { Category } from "src/app/products/enums/category.enum";
+import { ProductsService } from "src/app/products/services/products.service";
 
 @Component({
     selector: 'app-cart-list',
@@ -12,14 +13,15 @@ export class CartListComponent {
 
     isCartPopupOpen: boolean = false;
 
-    constructor(public readonly cartService: CartService) { }
+    constructor(public readonly cartService: CartService,
+        private readonly productsService:ProductsService) { }
 
     toggleCart() {
         this.isCartPopupOpen = !this.isCartPopupOpen;
     }
 
     buyRandom() {
-        this.cartService.addToCart();
+        this.cartService.addToCart(this.productsService.getRandomProduct());
     }
 
     clearCart() {
@@ -34,6 +36,7 @@ export class CartListComponent {
     getByCategory(category: Category): [ProductModel, number][] {
         return this.cartService.getCartItems().filter(x => x[0].category === category);
     }
+
     trackByName(_: number, item: [ProductModel, number]) {
         return item[0].name;
     }
