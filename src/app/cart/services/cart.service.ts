@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, WritableSignal, computed, signal } from '@angular/core';
 import { ProductModel } from "src/app/products/models/product.model";
 import { ProductsService } from "src/app/products/services/products.service";
 
@@ -6,9 +6,11 @@ import { ProductsService } from "src/app/products/services/products.service";
     providedIn: 'root'
 })
 export class CartService {
-    totalQuantity: number = 0;
     private cart: Map<ProductModel, number> = new Map();
-
+    private _totalQuantity: WritableSignal<number> = signal(0);
+    totalQuantity: Signal<number> = this._totalQuantity.asReadonly();
+    
+    
     constructor(private readonly productsService:ProductsService) {      
     }
 
@@ -16,7 +18,7 @@ export class CartService {
         const productToAdd = product || this.productsService.getRandomProduct();
 
         this.cart.set(productToAdd, (this.cart.get(productToAdd) || 0) + 1);
-        this.totalQuantity++;
+        this._totalQuantity.update(value => ++value);
     }
 
     getCartItems(): [ProductModel, number][] {
@@ -25,6 +27,6 @@ export class CartService {
 
     clearCart() {
         this.cart.clear();
-        this.totalQuantity = 0;
+        this._totalQuantity.set(0);
     }
 }
