@@ -31,14 +31,6 @@
     top: 0;
 }
 
-.product-container:not(.not-available) button {
-    cursor: pointer;
-}
-
-.product-container.not-available button:hover {
-    background-color: #007bff;
-}
-
 .not-available button:hover {
     cursor: default;
 }
