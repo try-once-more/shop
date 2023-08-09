@@ -23,20 +23,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
       - {{#if commit.breaking}}**Breaking change:** {{/if}}{{message}} {{#if href}}[`#{{id}}`]({{href}}){{/if}}
     {{/each}}
   {{/if}}
-  
-  {{#commit-list commits heading='### Added' message='^!*\s*(?:[Aa]dded)*(?::)*\s*'}}
+
+  {{#commit-list commits heading='### Added' message='^!*\s*(?:[Aa]dded)(?::)*\s*'}}
     - {{#if breaking}}**Breaking change:** {{/if}}{{subject}} [`{{shorthash}}`]({{href}})
   {{/commit-list}}
 
-  {{#commit-list commits heading='### Fixed' message='^!*\s*(?:[Ff]ixed)*(?::)*\s*'}}
+  {{#commit-list commits heading='### Fixed' message='^!*\s*(?:[Ff]ixed)(?::)*\s*'}}
     - {{#if breaking}}**Breaking change:** {{/if}}{{subject}} [`{{shorthash}}`]({{href}})
   {{/commit-list}}
 
-  {{#commit-list commits heading='### Changed' message='^!*\s*(?:[Cc]hanged)*(?::)*\s*'}}
+  {{#commit-list commits heading='### Changed' message='^!*\s*(?:[Cc]hanged)(?::)*\s*'}}
     - {{#if breaking}}**Breaking change:** {{/if}}{{subject}} [`{{shorthash}}`]({{href}})
   {{/commit-list}}
 
-  {{#commit-list commits heading='### Removed' message='^!*\s*(?:[Rr]emoved)*(?::)*\s*'}}
+  {{#commit-list commits heading='### Removed' message='^!*\s*(?:[Rr]emoved)(?::)*\s*'}}
     - {{#if breaking}}**Breaking change:** {{/if}}{{subject}} {{#if href}}[`{{shorthash}}`]({{href}}){{/if}}
   {{/commit-list}}
 {{/each}}
