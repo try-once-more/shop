@@ -10,9 +10,10 @@ import { CartService } from "src/app/cart/services/cart.service";
 export class ProductComponent {
     @Input({ required: true }) product!: ProductModel;
 
+    // Лучше сформировать аутпут
     constructor(private readonly cartService: CartService) {
     }
-    
+
     onAddToCart() {
         if (this.product.isAvailable) {
             this.cartService.addToCart(this.product);

@@ -11,3 +11,4 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+/* Если это общие стили для всех компонент, то их надо перенести в src/styles.scss */

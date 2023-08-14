@@ -34,6 +34,7 @@ export class ProductsService {
     }
 
 
+    // Этот метод можно вынести в тот же GeneratorService
     private generateRandomString(length: number): string {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let randomString = '';
