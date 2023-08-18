@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ProductModel } from "../../models/product.model";
-import { CartService } from "src/app/cart/services/cart.service";
 
 @Component({
     selector: 'app-product',
@@ -9,13 +8,9 @@ import { CartService } from "src/app/cart/services/cart.service";
 })
 export class ProductComponent {
     @Input({ required: true }) product!: ProductModel;
-
-    constructor(private readonly cartService: CartService) {
-    }
+    @Output() addToCart = new EventEmitter<ProductModel>();
     
     onAddToCart() {
-        if (this.product.isAvailable) {
-            this.cartService.addToCart(this.product);
-        }
+        this.addToCart.emit(this.product);
     }
 }
