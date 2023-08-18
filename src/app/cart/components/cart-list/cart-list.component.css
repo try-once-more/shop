@@ -1,5 +1,3 @@
-@import url("../../../shared/styles/styles.css");
-
 .cart-container {
     background-color: #ffffff;
     display: flex;
@@ -37,6 +35,7 @@
 }
 
 .overlay {
+    background-color: white;
     position: fixed;
     top: 0;
     left: 0;
