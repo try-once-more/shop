@@ -26,22 +26,10 @@ export class ProductsService {
         const categoryValues = Object.values(Category);
         return {
             name: `Product_${++index}`,
-            description: this.generateRandomString(Math.floor(Math.random() * 100)),
+            description: this.generatorService.generateString(Math.floor(Math.random() * 100)),
             price: parseFloat((Math.random() * 1000).toFixed(2)),
             category: categoryValues[this.generatorService.random(categoryValues.length)] as Category,
             isAvailable: Math.random() > 0.3
         };
-    }
-
-    private generateRandomString(length: number): string {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let randomString = '';
-
-        for (let i = 0; i < length; i++) {
-            const randomIndex = this.generatorService.random(characters.length);
-            randomString += characters.charAt(randomIndex);
-        }
-
-        return randomString;
     }
 }
