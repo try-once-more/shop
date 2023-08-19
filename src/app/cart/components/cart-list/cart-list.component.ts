@@ -4,13 +4,14 @@ import { ProductModel } from "src/app/products/models/product.model";
 import { Category } from "src/app/products/enums/category.enum";
 import { ProductsService } from "src/app/products/services/products.service";
 import { CommonModule } from "@angular/common";
+import { CartItemComponent } from "../cart-item/cart-item.component";
 
 @Component({
     standalone: true,
     selector: "app-cart-list",
     templateUrl: "./cart-list.component.html",
     styleUrls: ["./cart-list.component.css"],
-    imports: [CommonModule]
+    imports: [CommonModule, CartItemComponent]
 })
 export class CartListComponent {
 
