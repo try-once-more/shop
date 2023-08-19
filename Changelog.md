@@ -10,6 +10,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## v1.0.2 - 2023-08-19
+
+### Added
+
+- Сart Item component [`3db16ea`](https://github.com/try-once-more/shop/commit/3db16ea7f165f834a24a4e3b200bcc1944ca481a)
+- the ability to remove items from the cart [`4f962a7`](https://github.com/try-once-more/shop/commit/4f962a774c4dc3170d6f7bef45507ff27b3d7ed8)
+- the ability to increase and decrease the quantity of product in the cart [`f2ed747`](https://github.com/try-once-more/shop/commit/f2ed747377a9117f15588b163b5c895878aa3990)
+- Highlight directive [`bc83d3d`](https://github.com/try-once-more/shop/commit/bc83d3ded51d0b7f8af220df71b72f1220f331a2)
+- current version to app title [`411cff3`](https://github.com/try-once-more/shop/commit/411cff366b674548e0ce4c6c3e31db81780e16ae)
+- total cost of products added to the cart [`5daa00b`](https://github.com/try-once-more/shop/commit/5daa00bf6299e05ee4cf27e163b4b2a9cc3c911c)
+
+### Fixed
+
+- floating-point issue in cost [`f14df45`](https://github.com/try-once-more/shop/commit/f14df454f48eba36074d7575a084063ebdfd33cd)
+- display in the cart only the categories of added products [`9ff5702`](https://github.com/try-once-more/shop/commit/9ff5702ebb1a1d7067facb31fb7c15b0bc9b0c96)
+
+### Changed
+
+- receiving and displaying added to cart products in the Cart List component [`b0fbd18`](https://github.com/try-once-more/shop/commit/b0fbd18a0dce9c8f8f4595ea2fde92d75abd24a0)
+- the application became non-modular [`02a8163`](https://github.com/try-once-more/shop/commit/02a816352c2139beffdba9f8299dbeab968a6e0a)
+- moved appTitle to App component [`8315857`](https://github.com/try-once-more/shop/commit/831585700e033e05928023030dcbb86b31b55ee3)
+
 ## v1.0.1 - 2023-08-09
 
 ### Added
