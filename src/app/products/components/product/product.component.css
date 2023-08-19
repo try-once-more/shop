@@ -18,7 +18,6 @@
     }
 
     .product-header {
-        font-weight: bold;
         font-size: 18px;
     }
 }
@@ -28,8 +27,4 @@
     position: absolute;
     right: 0;
     top: 0;
-}
-
-.not-available button:hover {
-    cursor: default;
 }

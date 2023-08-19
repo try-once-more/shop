@@ -27,7 +27,7 @@ export class ProductsService {
         return {
             name: `Product_${++index}`,
             description: this.generatorService.generateString(Math.floor(Math.random() * 100)),
-            price: parseFloat((Math.random() * 1000).toFixed(2)),
+            price: parseFloat((Math.random() * 100).toFixed(2)),
             category: categoryValues[this.generatorService.random(categoryValues.length)] as Category,
             isAvailable: Math.random() > 0.3
         };

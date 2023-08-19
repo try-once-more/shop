@@ -1,7 +1,8 @@
 <div class="cart-container">
-    <div class="cart-title">Shop</div>
+    <div class="cart-title; bold">Shop</div>
     <ng-container *ngIf="this.cartService.totalQuantity() as totalQuantity; else randomButton">
-        <button (click)="toggleCart()">{{isCartPopupOpen?'Close Cart':'Open Cart'}} ({{totalQuantity}}/${{this.cartService.totalCost()}})</button>
+        <button (click)="toggleCart()">{{isCartPopupOpen?'Close Cart':'Open Cart'}}
+            ({{totalQuantity}}/${{this.cartService.totalCost()}})</button>
         <button (click)="clearCart()" class="clear-button">Clear Cart</button>
     </ng-container>
     <ng-template #randomButton>
