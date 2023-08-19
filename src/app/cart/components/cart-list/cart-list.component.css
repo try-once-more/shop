@@ -71,4 +71,8 @@
     .popup-container li {
         margin-bottom: 10px;
     }
+
+    .centered-text {
+        text-align: center;
+    }
 }

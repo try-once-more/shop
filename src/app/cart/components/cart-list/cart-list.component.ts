@@ -33,7 +33,8 @@ export class CartListComponent {
     }
 
     getCategories(): Category[] {
-        return Object.values(Category);
+        const cartItems = this.cartService.getCartItems();
+        return Object.values(Category).filter(c => cartItems.some(p => p[0].category === c));
     }
 
     getByCategory(category: Category): [ProductModel, number][] {

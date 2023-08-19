@@ -11,7 +11,7 @@
 <div *ngIf="isCartPopupOpen" class="overlay">
     <div class="popup-container"> Total: ${{this.cartService.totalCost()}}
         <ng-container *ngFor="let category of getCategories()" class="cart-title">
-            <div>List of {{category}}</div>
+            <p class="centered-text">{{category}}</p>
             <ul>
                 <li *ngFor="let item of getByCategory(category); trackBy:trackByName">{{item[0].name}} - {{item[1]}}
                 </li>
