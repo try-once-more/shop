@@ -16,4 +16,6 @@ export class CartItemComponent {
     @Input() maxQuantity: number = 999;
     @Input() minQuantity: number = 1;
     @Input() step: number = 1;
+
+    @Output() remove = new EventEmitter<ProductModel>();
 }

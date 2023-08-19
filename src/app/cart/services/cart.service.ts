@@ -17,6 +17,18 @@ export class CartService {
         this._totalCost.update(value => value + product.price);
     }
 
+    removeFromCart(product: ProductModel) {
+        const quantity = this.cart.get(product) || 0;
+        if (quantity > 0) {
+            this.cart.delete(product);
+            this._totalQuantity.update(value => value - quantity);
+            const totalCost = Array.from(this.cart)
+                .map(i => i[1] * i[0].price)
+                .reduce((total, value) => total + value, 0);
+            this._totalCost.update(_ => totalCost);
+        }
+    }
+
     getCartItems(): [ProductModel, number][] {
         return Array.from(this.cart);
     }

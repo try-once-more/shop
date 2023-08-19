@@ -13,9 +13,9 @@
     margin: 0 10px;
 }
 
-.quantity-controls {
-    display: flex;
-    align-items: center;
+button {
+    padding: 2px 6px;
+    margin: 0 2px;
 }
 
 input {

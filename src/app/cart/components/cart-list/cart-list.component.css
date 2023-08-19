@@ -10,14 +10,6 @@
     right: 0;
     z-index: 2;
 
-    .clear-button {
-        background-color: firebrick;
-    }
-
-    .clear-button:hover {
-        background-color: rgb(126, 42, 42);
-    }
-
     .random-button {
         background-color: darkorchid;
     }

@@ -45,4 +45,12 @@ export class CartListComponent {
     trackByName(_: number, item: [ProductModel, number]) {
         return item[0].name;
     }
+
+    onRemoveItem(product: ProductModel) {
+        this.cartService.removeFromCart(product);
+        if (this.cartService.getCartItems().length === 0)
+        {
+            this.isCartPopupOpen = false;
+        }
+    }
 }
