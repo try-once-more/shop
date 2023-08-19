@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { ProductModel } from "../models/product.model";
 import { Category } from "../enums/category.enum";
 import { GeneratorService } from "src/app/shared/services/generator.service";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root"
 })
 export class ProductsService {
 

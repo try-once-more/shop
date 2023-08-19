@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root"
 })
 export class GeneratorService {
     generate<T>(generator: () => T): T {
@@ -17,8 +17,8 @@ export class GeneratorService {
     }
 
     generateString(length: number): string {
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let randomString = '';
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let randomString = "";
 
         for (let i = 0; i < length; i++) {
             const randomIndex = this.random(characters.length);

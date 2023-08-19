@@ -1,8 +1,8 @@
-import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
+import { Injectable, Signal, WritableSignal, signal } from "@angular/core";
 import { ProductModel } from "src/app/products/models/product.model";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root"
 })
 export class CartService {
     private cart: Map<ProductModel, number> = new Map();
