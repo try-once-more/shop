@@ -18,11 +18,11 @@ export class ProductListComponent implements OnInit {
     constructor(private readonly productsService: ProductsService,
         private readonly cartService: CartService) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.productList = this.productsService.getProducts();
     }
 
-    onAddToCart(product: ProductModel) {
+    onAddToCart(product: ProductModel): void {
         this.cartService.addToCart(product);
     }
 }

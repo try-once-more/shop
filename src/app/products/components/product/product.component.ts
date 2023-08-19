@@ -13,7 +13,7 @@ export class ProductComponent {
     @Input({ required: true }) product!: ProductModel;
     @Output() addToCart = new EventEmitter<ProductModel>();
 
-    onAddToCart() {
+    onAddToCart(): void {
         this.addToCart.emit(this.product);
     }
 }
