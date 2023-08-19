@@ -17,7 +17,7 @@ export class CartListComponent {
     isCartPopupOpen: boolean = false;
 
     constructor(public readonly cartService: CartService,
-        private readonly productsService:ProductsService) { }
+        private readonly productsService: ProductsService) { }
 
     toggleCart() {
         this.isCartPopupOpen = !this.isCartPopupOpen;

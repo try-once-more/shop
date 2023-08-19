@@ -11,18 +11,22 @@
     z-index: 2;
 
     .clear-button {
-        background-color: firebrick; 
+        background-color: firebrick;
     }
+
     .clear-button:hover {
         background-color: rgb(126, 42, 42);
     }
+
     .random-button {
-        background-color: darkorchid; 
+        background-color: darkorchid;
     }
+
     .random-button:hover {
-        background-color: rgb(114, 53, 145); 
+        background-color: rgb(114, 53, 145);
     }
 }
+
 .cart-container button {
     margin-left: 10px;
 }
@@ -45,7 +49,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1; 
+    z-index: 1;
 
     .popup-container {
         background-color: #fff;

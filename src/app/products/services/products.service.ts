@@ -8,7 +8,7 @@ import { GeneratorService } from "src/app/shared/services/generator.service";
 })
 export class ProductsService {
 
-    private readonly products: ProductModel[]
+    private readonly products: ProductModel[];
 
     constructor(private readonly generatorService: GeneratorService) {
         this.products = this.generatorService.generateArray(100, (i) => this.generateRandomProduct(i));

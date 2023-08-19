@@ -4,6 +4,7 @@
     z-index: 1000;
     height: 50px;
 }
+
 .content {
     max-height: calc(100% - 50px);
     overflow-y: auto;
