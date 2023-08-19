@@ -1,6 +1,9 @@
 <div class="item-details">
     <p class="item-name">{{product.name}}</p>
     <p class="item-price bold">${{(product.price * quantity).toFixed(2)}}</p>
-    <input type="number" [step]="step" [min]="minQuantity" [max]="maxQuantity" [(ngModel)]="quantity" />
+    <button [disabled]="quantity<=minQuantity" (click)="changeQuantity(input.valueAsNumber - 1)">−</button>
+    <input #input type="number" [value]="quantity" [step]="step" [min]="minQuantity" [max]="maxQuantity"
+        (input)="changeQuantity(input.valueAsNumber, $event.target)" />
+    <button [disabled]="quantity>=maxQuantity" (click)="changeQuantity(input.valueAsNumber + 1)">+</button>
     <button (click)="this.remove.emit(this.product)" class="red-button">X</button>
 </div>

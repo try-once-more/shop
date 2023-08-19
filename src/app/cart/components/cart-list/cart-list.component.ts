@@ -49,4 +49,8 @@ export class CartListComponent implements OnInit {
             this.isCartPopupOpen = false;
         }
     }
+
+    onQuantityChange(product: ProductModel, newQuantity: number): void {
+        this.cartService.changeQuantity(product, newQuantity);
+    }
 }

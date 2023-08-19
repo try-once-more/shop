@@ -1,14 +1,12 @@
 
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { ProductModel } from "src/app/products/models/product.model";
 
 @Component({
     standalone: true,
     selector: "app-cart-item",
     templateUrl: "./cart-item.component.html",
-    styleUrls: ["./cart-item.component.css"],
-    imports: [FormsModule]
+    styleUrls: ["./cart-item.component.css"]
 })
 export class CartItemComponent {
     @Input({ required: true }) product!: ProductModel;
@@ -18,4 +16,19 @@ export class CartItemComponent {
     @Input() step: number = 1;
 
     @Output() remove = new EventEmitter<ProductModel>();
+    @Output() quantityChange = new EventEmitter<number>();
+
+    changeQuantity(newQuantity: number, inputElement: EventTarget | null = null): void {
+        if (!isNaN(newQuantity) && newQuantity >= this.minQuantity && newQuantity <= this.maxQuantity) {
+            this.quantityChange.emit(newQuantity);
+        }
+        else if (inputElement instanceof HTMLInputElement) {
+            if (isNaN(newQuantity) || newQuantity < this.minQuantity) {
+                inputElement.valueAsNumber = this.minQuantity;
+            }
+            else {
+                inputElement.valueAsNumber = this.maxQuantity;
+            }
+        }
+    }
 }

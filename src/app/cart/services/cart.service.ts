@@ -47,4 +47,18 @@ export class CartService {
         this._totalQuantity.set(0);
         this._totalCost.set(0);
     }
+
+    changeQuantity(product: ProductModel, newQuantity: number): void {
+        const productMap = this._cartItems.get(product.category);
+        if (productMap !== undefined) {
+            const quantity = productMap.get(product) ?? 0;
+            if (quantity > 0) {
+                const diff = newQuantity - quantity;
+                productMap.set(product, newQuantity);
+
+                this._totalQuantity.update(value => value + diff);
+                this._totalCost.update(value => MathHelper.round(value + diff * product.price));
+            }
+        }
+    }
 }
