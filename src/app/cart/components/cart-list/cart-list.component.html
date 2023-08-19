@@ -1,5 +1,4 @@
 <div class="cart-container">
-    <div class="cart-title; bold">Shop</div>
     <ng-container *ngIf="this.cartService.totalQuantity() as totalQuantity; else randomButton">
         <button (click)="toggleCart()">{{isCartPopupOpen?'Close Cart':'Open Cart'}}
             ({{totalQuantity}}/${{this.cartService.totalCost()}})</button>
@@ -11,7 +10,7 @@
 </div>
 <div *ngIf="isCartPopupOpen" class="overlay">
     <div class="popup-container">Total: ${{this.cartService.totalCost()}}
-        <ng-container *ngFor="let item of cartItems | keyvalue" class="cart-title">
+        <ng-container *ngFor="let item of cartItems | keyvalue">
             <p class="centered-text">{{item.key}}</p>
             <app-cart-item *ngFor="let product of item.value | keyvalue; trackBy : trackProductByName"
                 [product]="product.key" [quantity]="product.value" (remove)="onRemoveItem($event)"
