@@ -1,12 +1,14 @@
 
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { ProductModel } from "src/app/products/models/product.model";
+import { HighlightDirective } from "src/app/shared/directives/highlight.directive";
 
 @Component({
     standalone: true,
     selector: "app-cart-item",
     templateUrl: "./cart-item.component.html",
-    styleUrls: ["./cart-item.component.css"]
+    styleUrls: ["./cart-item.component.css"],
+    imports:[HighlightDirective]
 })
 export class CartItemComponent {
     @Input({ required: true }) product!: ProductModel;

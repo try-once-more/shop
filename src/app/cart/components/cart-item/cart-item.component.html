@@ -1,4 +1,4 @@
-<div class="item-details">
+<div class="item-details" appHighlight>
     <p class="item-name">{{product.name}}</p>
     <p class="item-price bold">${{(product.price * quantity).toFixed(2)}}</p>
     <button [disabled]="quantity<=minQuantity" (click)="changeQuantity(input.valueAsNumber - 1)">−</button>
