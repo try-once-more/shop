@@ -11,12 +11,10 @@
 </div>
 <div *ngIf="isCartPopupOpen" class="overlay">
     <div class="popup-container">Total: ${{this.cartService.totalCost()}}
-        <ng-container *ngFor="let category of getCategories()" class="cart-title">
-            <p class="centered-text">{{category}}</p>
-            <app-cart-item *ngFor="let item of getByCategory(category); trackBy:trackByName"
-                [product]="item[0]"
-                [quantity]="item[1]"
-                (remove)="onRemoveItem($event)">
+        <ng-container *ngFor="let item of cartItems | keyvalue" class="cart-title">
+            <p class="centered-text">{{item.key}}</p>
+            <app-cart-item *ngFor="let product of item.value | keyvalue; trackBy : trackProductByName"
+                [product]="product.key" [quantity]="product.value" (remove)="onRemoveItem($event)">
             </app-cart-item>
         </ng-container>
     </div>

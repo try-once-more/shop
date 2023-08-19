@@ -1,9 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CartService } from "../../services/cart.service";
 import { ProductModel } from "src/app/products/models/product.model";
 import { Category } from "src/app/products/enums/category.enum";
 import { ProductsService } from "src/app/products/services/products.service";
-import { CommonModule } from "@angular/common";
+import { CommonModule, KeyValue } from "@angular/common";
 import { CartItemComponent } from "../cart-item/cart-item.component";
 
 @Component({
@@ -13,43 +13,39 @@ import { CartItemComponent } from "../cart-item/cart-item.component";
     styleUrls: ["./cart-list.component.css"],
     imports: [CommonModule, CartItemComponent]
 })
-export class CartListComponent {
+export class CartListComponent implements OnInit {
 
     isCartPopupOpen: boolean = false;
+    cartItems!: ReadonlyMap<Category, ReadonlyMap<ProductModel, number>>;
 
     constructor(public readonly cartService: CartService,
-        private readonly productsService: ProductsService) { }
+        private readonly productsService: ProductsService) {
+    }
 
-    toggleCart() {
+    ngOnInit(): void {
+        this.cartItems = this.cartService.getCartItems();
+    }
+
+    toggleCart(): void {
         this.isCartPopupOpen = !this.isCartPopupOpen;
     }
 
-    buyRandom() {
+    buyRandom(): void {
         this.cartService.addToCart(this.productsService.getRandomProduct());
     }
 
-    clearCart() {
+    clearCart(): void {
         this.cartService.clearCart();
         this.isCartPopupOpen = false;
     }
 
-    getCategories(): Category[] {
-        const cartItems = this.cartService.getCartItems();
-        return Object.values(Category).filter(c => cartItems.some(p => p[0].category === c));
+    trackProductByName(_: number, item: KeyValue<ProductModel, number>): string {
+        return item.key.name;
     }
 
-    getByCategory(category: Category): [ProductModel, number][] {
-        return this.cartService.getCartItems().filter(x => x[0].category === category);
-    }
-
-    trackByName(_: number, item: [ProductModel, number]) {
-        return item[0].name;
-    }
-
-    onRemoveItem(product: ProductModel) {
+    onRemoveItem(product: ProductModel): void {
         this.cartService.removeFromCart(product);
-        if (this.cartService.getCartItems().length === 0)
-        {
+        if (this.cartItems.size === 0) {
             this.isCartPopupOpen = false;
         }
     }
