@@ -1,6 +1,7 @@
 import { Injectable, signal } from "@angular/core";
 import { Category } from "src/app/products/enums/category.enum";
 import { ProductModel } from "src/app/products/models/product.model";
+import { MathHelper } from "src/app/shared/math.helper";
 
 @Injectable({
     providedIn: "root"
@@ -19,7 +20,7 @@ export class CartService {
         this._cartItems.set(product.category, productMap);
 
         this._totalQuantity.update(value => ++value);
-        this._totalCost.update(value => value + product.price);
+        this._totalCost.update(value => MathHelper.round(value + product.price));
     }
 
     removeFromCart(product: ProductModel): void {
@@ -32,7 +33,7 @@ export class CartService {
                     this._cartItems.delete(product.category);
                 }
                 this._totalQuantity.update(value => value - quantity);
-                this._totalCost.update(value => value - quantity * product.price);
+                this._totalCost.update(value => MathHelper.round(value - quantity * product.price));
             }
         }
     }
