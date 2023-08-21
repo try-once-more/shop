@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+### Fixed
+
+- incorrect display of totals when incorrect quantity is entered [`8f79339`](https://github.com/try-once-more/shop/commit/8f793397b3840df39da73f6088fba9c28772eb7b)
 
 
 ## v1.0.2 - 2023-08-19
