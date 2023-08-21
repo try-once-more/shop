@@ -1,4 +1,4 @@
-<div class="product-container">
+<div class="product-container" appChangeStyle [border]="'5px solid red'">
     <div class="product-content" [ngClass]="{'not-available': !product.isAvailable}">
         <div class="product-header; bold">${{ product.price }} | {{ product.name }} | {{ product.category }}</div>
         <div>{{product.description || "No description"}}</div>
