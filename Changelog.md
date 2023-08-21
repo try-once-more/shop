@@ -8,10 +8,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 
+
+
+## v1.0.3 - 2023-08-21
+
+### Added
+
+- ChangeStyleDirective which on click changes the border and on ctrl+scrolling changes the text size of the element [`e661b31`](https://github.com/try-once-more/shop/commit/e661b31bd6ca5720ac323872f0f45140014f8151)
+- LocalStorageService [`b8d0ac4`](https://github.com/try-once-more/shop/commit/b8d0ac47968e0dc27b06a80354749b88ced492da)
+- ConfigOptionsService [`dac45af`](https://github.com/try-once-more/shop/commit/dac45af7d2be8b90ba2c8fb9ae8d95d53ed3780d)
+- ConstantsService [`859aa03`](https://github.com/try-once-more/shop/commit/859aa031ec14f39bbdcf87d6bac478c8e2ae0a21)
+- GeneratorFactory, GeneratedStringToken. [`cde7f16`](https://github.com/try-once-more/shop/commit/cde7f16653b43e6c6b657e28fe2e8b9e289b7ee2)
+- genID function [`18850ed`](https://github.com/try-once-more/shop/commit/18850ed2658160f3ade8786a039217c8e17dbef6)
+
 ### Fixed
 
 - incorrect display of totals when incorrect quantity is entered [`8f79339`](https://github.com/try-once-more/shop/commit/8f793397b3840df39da73f6088fba9c28772eb7b)
 
+### Changed
+
+- modified CartService. getProducts method returns an Observable using the immutable approach. [`bd932be`](https://github.com/try-once-more/shop/commit/bd932beafb0c37edaabfd38e9810c96a91f12565)
 
 ## v1.0.2 - 2023-08-19
 
