@@ -1,9 +1,12 @@
 import { Injectable } from "@angular/core";
+import { genID } from "src/app/core/services/gen-id.generator";
 
 @Injectable({
     providedIn: "root"
 })
 export class GeneratorService {
+    private idGenerator = genID();
+
     generate<T>(generator: () => T): T {
         return generator();
     }
@@ -26,5 +29,9 @@ export class GeneratorService {
         }
 
         return randomString;
+    }
+
+    getNewID(): number | void {
+        return this.idGenerator.next().value;
     }
 }

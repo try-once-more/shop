@@ -25,10 +25,10 @@ export class ProductsService {
         return this.products[this.generatorService.random(this.products.length)];
     }
 
-    private generateRandomProduct(index: number): ProductModel {
+    private generateRandomProduct(_: number): ProductModel {
         const categoryValues = Object.values(Category);
         return {
-            name: `Product_${++index}`,
+            name: `Product[id:${this.generatorService.getNewID()}]`,
             description: this.generatedString(Math.floor(Math.random() * 100)),
             price: MathHelper.round(Math.random() * 100),
             category: categoryValues[this.generatorService.random(categoryValues.length)] as Category,
