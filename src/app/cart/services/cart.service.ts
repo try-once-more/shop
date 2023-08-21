@@ -2,63 +2,77 @@ import { Injectable, signal } from "@angular/core";
 import { Category } from "src/app/products/enums/category.enum";
 import { ProductModel } from "src/app/products/models/product.model";
 import { MathHelper } from "src/app/shared/math.helper";
+import { CartItemModel } from "../models/cart-item.model";
+import { BehaviorSubject, Observable, of } from "rxjs";
 
 @Injectable({
     providedIn: "root"
 })
 export class CartService {
-    private readonly _cartItems = new Map<Category, Map<ProductModel, number>>();
+    private readonly _cartProducts = new BehaviorSubject<ReadonlyArray<CartItemModel>>([]);
     private readonly _totalQuantity = signal(0);
     private readonly _totalCost = signal(0);
+    private readonly _isEmptyCart = signal(true);
 
     totalQuantity = this._totalQuantity.asReadonly();
     totalCost = this._totalCost.asReadonly();
+    isEmptyCart = this._isEmptyCart.asReadonly();
 
-    addToCart(product: ProductModel): void {
-        const productMap = this._cartItems.get(product.category) ?? new Map<ProductModel, number>();
-        productMap.set(product, (productMap.get(product) ?? 0) + 1);
-        this._cartItems.set(product.category, productMap);
-
-        this._totalQuantity.update(value => ++value);
-        this._totalCost.update(value => MathHelper.round(value + product.price));
+    getProducts(): Observable<ReadonlyArray<CartItemModel>> {
+        return this._cartProducts.asObservable();
     }
 
-    removeFromCart(product: ProductModel): void {
-        const productMap = this._cartItems.get(product.category);
-        if (productMap !== undefined) {
-            const quantity = productMap.get(product) ?? 0;
-            if (quantity > 0) {
-                productMap.delete(product);
-                if (productMap.size === 0) {
-                    this._cartItems.delete(product.category);
-                }
-                this._totalQuantity.update(value => value - quantity);
-                this._totalCost.update(value => MathHelper.round(value - quantity * product.price));
-            }
+    addProduct(product: ProductModel, quantity: number = 1): void {
+        if (quantity <= 0) {
+            return;
+        }
+
+        const itemToAdd = this._cartProducts.getValue().find(x => x.product === product);
+        if (!itemToAdd) {
+            const cost = MathHelper.round(quantity * product.price);
+            this._cartProducts.next(this._cartProducts.getValue().concat({ product: product, quantity: quantity, cost: cost }));
+            this.updateState(quantity, cost);
+        } else {
+            this.increaseQuantity(product, quantity);
         }
     }
 
-    getCartItems(): ReadonlyMap<Category, ReadonlyMap<ProductModel, number>> {
-        return this._cartItems as ReadonlyMap<Category, ReadonlyMap<ProductModel, number>>;
-    }
-
-    clearCart(): void {
-        this._cartItems.clear();
-        this._totalQuantity.set(0);
-        this._totalCost.set(0);
-    }
-
-    changeQuantity(product: ProductModel, newQuantity: number): void {
-        const productMap = this._cartItems.get(product.category);
-        if (productMap !== undefined) {
-            const quantity = productMap.get(product) ?? 0;
-            if (quantity > 0) {
-                const diff = newQuantity - quantity;
-                productMap.set(product, newQuantity);
-
-                this._totalQuantity.update(value => value + diff);
-                this._totalCost.update(value => MathHelper.round(value + diff * product.price));
-            }
+    removeProduct(product: ProductModel): void {
+        const itemToRemove = this._cartProducts.getValue().find(x => x.product === product);
+        if (itemToRemove) {
+            this._cartProducts.next(this._cartProducts.getValue().filter(x => x.product !== product));
+            this.updateState(-itemToRemove.quantity, -itemToRemove.cost);
         }
+    }
+
+    removeAllProducts(): void {
+        this._cartProducts.next([]);
+        this.updateState(-this.totalQuantity(), -this.totalCost());
+    }
+
+    increaseQuantity(product: ProductModel, quantity: number): void {
+        this.changeQuantity(product, quantity);
+    }
+
+    decreaseQuantity(product: ProductModel, quantity: number): void {
+        this.changeQuantity(product, -quantity);
+    }
+
+    private changeQuantity(product: ProductModel, diffQuantity: number): void {
+        this._cartProducts.next(this._cartProducts.getValue().map(item =>
+            item.product === product
+                ? {
+                    product: product,
+                    quantity: item.quantity + diffQuantity,
+                    cost: MathHelper.round((item.quantity + diffQuantity) * product.price)
+                } : item
+        ));
+        this.updateState(diffQuantity, diffQuantity * product.price);
+    }
+
+    private updateState(quantityToAdd: number, costToAdd: number): void {
+        this._totalQuantity.update(value => value + quantityToAdd);
+        this._totalCost.update(value => MathHelper.round(value + costToAdd));
+        this._isEmptyCart.set(!this._cartProducts.getValue().length);
     }
 }

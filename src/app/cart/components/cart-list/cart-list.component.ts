@@ -1,29 +1,28 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { CartService } from "../../services/cart.service";
 import { ProductModel } from "src/app/products/models/product.model";
-import { Category } from "src/app/products/enums/category.enum";
 import { ProductsService } from "src/app/products/services/products.service";
-import { CommonModule, KeyValue } from "@angular/common";
+import { CommonModule } from "@angular/common";
 import { CartItemComponent } from "../cart-item/cart-item.component";
+import { CartItemModel } from "../../models/cart-item.model";
+import { FilterCartItemsByCategoryPipe } from "../../pipes/filter-cart-items-by-category.pipe";
+import { map } from "rxjs";
 
 @Component({
     standalone: true,
     selector: "app-cart-list",
     templateUrl: "./cart-list.component.html",
     styleUrls: ["./cart-list.component.css"],
-    imports: [CommonModule, CartItemComponent]
+    imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe]
 })
-export class CartListComponent implements OnInit {
-
+export class CartListComponent {
     isCartPopupOpen: boolean = false;
-    cartItems!: ReadonlyMap<Category, ReadonlyMap<ProductModel, number>>;
+    cartItems$ = this.cartService.getProducts();
+    categories$ = this.cartItems$.pipe(
+        map(cartItems => new Set(cartItems.map(item => item.product.category))));
 
     constructor(public readonly cartService: CartService,
         private readonly productsService: ProductsService) {
-    }
-
-    ngOnInit(): void {
-        this.cartItems = this.cartService.getCartItems();
     }
 
     toggleCart(): void {
@@ -31,26 +30,30 @@ export class CartListComponent implements OnInit {
     }
 
     buyRandom(): void {
-        this.cartService.addToCart(this.productsService.getRandomProduct());
+        this.cartService.addProduct(this.productsService.getRandomProduct());
     }
 
     clearCart(): void {
-        this.cartService.clearCart();
+        this.cartService.removeAllProducts();
         this.isCartPopupOpen = false;
     }
 
-    trackProductByName(_: number, item: KeyValue<ProductModel, number>): string {
-        return item.key.name;
+    trackProductByName(_: number, item: CartItemModel): string {
+        return item.product.name;
     }
 
     onRemoveItem(product: ProductModel): void {
-        this.cartService.removeFromCart(product);
-        if (this.cartItems.size === 0) {
+        this.cartService.removeProduct(product);
+        if (this.cartService.isEmptyCart()) {
             this.isCartPopupOpen = false;
         }
     }
 
-    onQuantityChange(product: ProductModel, newQuantity: number): void {
-        this.cartService.changeQuantity(product, newQuantity);
+    onQuantityChange(cartItem: CartItemModel, newQuantity: number): void {
+        if (newQuantity > cartItem.quantity) {
+            this.cartService.increaseQuantity(cartItem.product, newQuantity - cartItem.quantity);
+        } else if (newQuantity < cartItem.quantity) {
+            this.cartService.decreaseQuantity(cartItem.product, cartItem.quantity - newQuantity);
+        }
     }
 }
