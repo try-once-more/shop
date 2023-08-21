@@ -31,6 +31,7 @@ export class CartItemComponent {
             else {
                 inputElement.valueAsNumber = this.maxQuantity;
             }
+            this.quantityChange.emit(inputElement.valueAsNumber);
         }
     }
 }
