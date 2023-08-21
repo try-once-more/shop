@@ -1,9 +1,9 @@
-import { Injectable, signal } from "@angular/core";
-import { Category } from "src/app/products/enums/category.enum";
+import { Injectable, Optional, signal } from "@angular/core";
 import { ProductModel } from "src/app/products/models/product.model";
 import { MathHelper } from "src/app/shared/math.helper";
 import { CartItemModel } from "../models/cart-item.model";
-import { BehaviorSubject, Observable, of } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
+import { LocalStorageService } from "src/app/core/services/local-storage.service";
 
 @Injectable({
     providedIn: "root"
@@ -17,6 +17,8 @@ export class CartService {
     totalQuantity = this._totalQuantity.asReadonly();
     totalCost = this._totalCost.asReadonly();
     isEmptyCart = this._isEmptyCart.asReadonly();
+
+    constructor(@Optional() private localStorageService: LocalStorageService) { }
 
     getProducts(): Observable<ReadonlyArray<CartItemModel>> {
         return this._cartProducts.asObservable();
@@ -32,9 +34,10 @@ export class CartService {
             const cost = MathHelper.round(quantity * product.price);
             this._cartProducts.next(this._cartProducts.getValue().concat({ product: product, quantity: quantity, cost: cost }));
             this.updateState(quantity, cost);
+            this.localStorageService?.setItem(product.name, `${new Date(Date.now())}`);
         } else {
             this.increaseQuantity(product, quantity);
-        }
+        }      
     }
 
     removeProduct(product: ProductModel): void {
@@ -42,12 +45,16 @@ export class CartService {
         if (itemToRemove) {
             this._cartProducts.next(this._cartProducts.getValue().filter(x => x.product !== product));
             this.updateState(-itemToRemove.quantity, -itemToRemove.cost);
+
+            this.localStorageService?.removeItem(product.name);
         }
     }
 
     removeAllProducts(): void {
         this._cartProducts.next([]);
         this.updateState(-this.totalQuantity(), -this.totalCost());
+
+        this.localStorageService?.clear();
     }
 
     increaseQuantity(product: ProductModel, quantity: number): void {

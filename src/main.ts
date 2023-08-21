@@ -4,6 +4,7 @@ import { ConstantsServiceToken } from "./app/core/services/constant.service";
 import { GeneratedStringToken } from "./app/core/services/generated-string.token";
 import { GeneratorFactory } from "./app/core/services/generator.factory";
 import { GeneratorService } from "./app/shared/services/generator.service";
+import { LocalStorageService } from "./app/core/services/local-storage.service";
 
 const constants = {
     App: "Shop",
@@ -14,6 +15,7 @@ const constants = {
 bootstrapApplication(AppComponent, {
     providers: [
         { provide: ConstantsServiceToken, useValue: constants },
-        { provide: GeneratedStringToken, useFactory: GeneratorFactory, deps: [GeneratorService]}
+        { provide: GeneratedStringToken, useFactory: GeneratorFactory, deps: [GeneratorService]},
+        { provide: LocalStorageService, useValue: new LocalStorageService() }
     ]
 }).catch(err => console.error(err));
