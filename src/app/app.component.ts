@@ -3,6 +3,12 @@ import { CartListComponent } from "./cart/components/cart-list/cart-list.compone
 import { ProductListComponent } from "./products/components/product-list/product-list.component";
 import { Constants, ConstantsServiceToken } from "./core/services/constant.service";
 
+// Я использую текой порядок следования свойств
+// Мое имя selector
+// Мой тип standalone
+// Я завищу от imports
+// В моем templateUrl
+// используются styleUrls
 @Component({
     standalone: true,
     selector: "app-root",

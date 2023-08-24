@@ -11,3 +11,4 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+/* Если это общие стили, то их лучше в styles.css вынести */

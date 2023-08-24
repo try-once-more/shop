@@ -8,6 +8,8 @@ import { Category } from "src/app/products/enums/category.enum";
 })
 export class FilterCartItemsByCategoryPipe implements PipeTransform {
     transform(items: readonly CartItemModel[] | null, category: Category): CartItemModel[] | null {
-        return items?.filter(x => x.product.category === category) ?? null;
+        // Я рассказывал о том, что лучше возвращать не null, а первоначальный массив
+		// В таком случае будет возможность в цепочке применять другие пайпы
+		return items?.filter(x => x.product.category === category) ?? null;
     }
 }
