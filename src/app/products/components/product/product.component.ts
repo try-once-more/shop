@@ -1,21 +1,20 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { ProductModel } from "../../models/product.model";
-import { CartService } from "src/app/cart/services/cart.service";
+import { CommonModule } from "@angular/common";
+import { ChangeStyleDirective } from "src/app/shared/directives/change-style.directive";
 
 @Component({
-    selector: 'app-product',
-    templateUrl: './product.component.html',
-    styleUrls: ['./product.component.css']
+    standalone: true,
+    selector: "app-product",
+    templateUrl: "./product.component.html",
+    styleUrls: ["./product.component.css"],
+    imports: [CommonModule, ChangeStyleDirective]
 })
 export class ProductComponent {
     @Input({ required: true }) product!: ProductModel;
+    @Output() addToCart = new EventEmitter<ProductModel>();
 
-    constructor(private readonly cartService: CartService) {
-    }
-    
-    onAddToCart() {
-        if (this.product.isAvailable) {
-            this.cartService.addToCart(this.product);
-        }
+    onAddToCart(): void {
+        this.addToCart.emit(this.product);
     }
 }

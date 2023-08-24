@@ -1,40 +1,59 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 import { CartService } from "../../services/cart.service";
 import { ProductModel } from "src/app/products/models/product.model";
-import { Category } from "src/app/products/enums/category.enum";
+import { ProductsService } from "src/app/products/services/products.service";
+import { CommonModule } from "@angular/common";
+import { CartItemComponent } from "../cart-item/cart-item.component";
+import { CartItemModel } from "../../models/cart-item.model";
+import { FilterCartItemsByCategoryPipe } from "../../pipes/filter-cart-items-by-category.pipe";
+import { map } from "rxjs";
 
 @Component({
-    selector: 'app-cart-list',
-    templateUrl: './cart-list.component.html',
-    styleUrls: ['./cart-list.component.css']
+    standalone: true,
+    selector: "app-cart-list",
+    templateUrl: "./cart-list.component.html",
+    styleUrls: ["./cart-list.component.css"],
+    imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe]
 })
 export class CartListComponent {
-
     isCartPopupOpen: boolean = false;
+    cartItems$ = this.cartService.getProducts();
+    categories$ = this.cartItems$.pipe(
+        map(cartItems => new Set(cartItems.map(item => item.product.category))));
 
-    constructor(public readonly cartService: CartService) { }
+    constructor(public readonly cartService: CartService,
+        private readonly productsService: ProductsService) {
+    }
 
-    toggleCart() {
+    toggleCart(): void {
         this.isCartPopupOpen = !this.isCartPopupOpen;
     }
 
-    buyRandom() {
-        this.cartService.addToCart();
+    buyRandom(): void {
+        this.cartService.addProduct(this.productsService.getRandomProduct());
     }
 
-    clearCart() {
-        this.cartService.clearCart();
+    clearCart(): void {
+        this.cartService.removeAllProducts();
         this.isCartPopupOpen = false;
     }
 
-    getCategories(): Category[] {
-        return Object.values(Category);
+    trackProductByName(_: number, item: CartItemModel): string {
+        return item.product.name;
     }
 
-    getByCategory(category: Category): [ProductModel, number][] {
-        return this.cartService.getCartItems().filter(x => x[0].category === category);
+    onRemoveItem(product: ProductModel): void {
+        this.cartService.removeProduct(product);
+        if (this.cartService.isEmptyCart()) {
+            this.isCartPopupOpen = false;
+        }
     }
-    trackByName(_: number, item: [ProductModel, number]) {
-        return item[0].name;
+
+    onQuantityChange(cartItem: CartItemModel, newQuantity: number): void {
+        if (newQuantity > cartItem.quantity) {
+            this.cartService.increaseQuantity(cartItem.product, newQuantity - cartItem.quantity);
+        } else if (newQuantity < cartItem.quantity) {
+            this.cartService.decreaseQuantity(cartItem.product, cartItem.quantity - newQuantity);
+        }
     }
 }

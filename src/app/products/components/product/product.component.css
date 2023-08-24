@@ -1,5 +1,3 @@
-@import url("../../../shared/styles/styles.css");
-
 .not-available {
     text-decoration: line-through;
     opacity: 0.5;
@@ -13,13 +11,11 @@
     width: 100%;
     position: relative;
     font-size: 14px;
-    
     .product-content {
         flex: 1;
     }
 
     .product-header {
-        font-weight: bold;
         font-size: 18px;
     }
 }
@@ -29,16 +25,4 @@
     position: absolute;
     right: 0;
     top: 0;
-}
-
-.product-container:not(.not-available) button {
-    cursor: pointer;
-}
-
-.product-container.not-available button:hover {
-    background-color: #007bff;
-}
-
-.not-available button:hover {
-    cursor: default;
 }

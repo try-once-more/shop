@@ -1,7 +1,7 @@
-<div class="product-container" [ngClass]="{'not-available': !product.isAvailable}">
-    <div class="product-content">
-        <div class="product-header">${{ product.price }} | {{ product.name }} | {{ product.category }}</div>
-        <div>{{ product.description }}</div>
+<div class="product-container" appChangeStyle [border]="'5px solid red'">
+    <div class="product-content" [ngClass]="{'not-available': !product.isAvailable}">
+        <div class="product-header; bold">${{ product.price }} | {{ product.name }} | {{ product.category }}</div>
+        <div>{{product.description || "No description"}}</div>
     </div>
-    <button (click)="onAddToCart()">Buy</button>
+    <button [disabled]="!product.isAvailable" (click)="onAddToCart()">Buy</button>
 </div>
