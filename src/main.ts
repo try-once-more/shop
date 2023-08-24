@@ -18,4 +18,4 @@ bootstrapApplication(AppComponent, {
         { provide: GeneratedStringToken, useFactory: GeneratorFactory, deps: [GeneratorService]},
         { provide: LocalStorageService, useValue: new LocalStorageService() }
     ]
-}).catch(err => console.error(err));
+}).catch((error: Error) => console.error(error));

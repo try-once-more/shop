@@ -4,8 +4,8 @@ import { ProductListComponent } from "./products/components/product-list/product
 import { Constants, ConstantsServiceToken } from "./core/services/constant.service";
 
 @Component({
-    standalone: true,
     selector: "app-root",
+    standalone: true,
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.css"],
     imports: [CartListComponent, ProductListComponent]
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-       this.title = `${this.constants.App} v${this.constants.Version}`;
+        this.title = `${this.constants.App} v${this.constants.Version}`;
     }
 
     ngAfterViewInit() {

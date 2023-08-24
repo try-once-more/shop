@@ -37,7 +37,7 @@ export class CartService {
             this.localStorageService?.setItem(product.name, `${new Date(Date.now())}`);
         } else {
             this.increaseQuantity(product, quantity);
-        }      
+        }
     }
 
     removeProduct(product: ProductModel): void {

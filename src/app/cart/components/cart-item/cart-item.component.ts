@@ -4,11 +4,11 @@ import { ProductModel } from "src/app/products/models/product.model";
 import { HighlightDirective } from "src/app/shared/directives/highlight.directive";
 
 @Component({
-    standalone: true,
     selector: "app-cart-item",
+    standalone: true,
     templateUrl: "./cart-item.component.html",
     styleUrls: ["./cart-item.component.css"],
-    imports:[HighlightDirective]
+    imports: [HighlightDirective]
 })
 export class CartItemComponent {
     @Input({ required: true }) product!: ProductModel;

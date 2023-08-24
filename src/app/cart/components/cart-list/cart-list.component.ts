@@ -9,8 +9,8 @@ import { FilterCartItemsByCategoryPipe } from "../../pipes/filter-cart-items-by-
 import { map } from "rxjs";
 
 @Component({
-    standalone: true,
     selector: "app-cart-list",
+    standalone: true,
     templateUrl: "./cart-list.component.html",
     styleUrls: ["./cart-list.component.css"],
     imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe]
