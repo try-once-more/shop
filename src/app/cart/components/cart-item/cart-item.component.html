@@ -3,7 +3,7 @@
     <p class="item-price bold">${{(product.price * quantity).toFixed(2)}}</p>
     <button
         [disabled]="quantity<=minQuantity"
-        (click)="changeQuantity(input.valueAsNumber - 1)"> −
+        (click)="changeQuantity(input.valueAsNumber - step)"> −
     </button>
     <input
         #input type="number"
@@ -11,10 +11,10 @@
         [step]="step"
         [min]="minQuantity"
         [max]="maxQuantity"
-        (input)="changeQuantity(input.valueAsNumber, $event.target)"/>
+        (input)="changeQuantity(input.valueAsNumber)"/>
     <button
         [disabled]="quantity>=maxQuantity"
-        (click)="changeQuantity(input.valueAsNumber + 1)"> +
+        (click)="changeQuantity(input.valueAsNumber + step)"> +
     </button>
     <button (click)="this.remove.emit(this.product)" class="red-button">X</button>
 </div>

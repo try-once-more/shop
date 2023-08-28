@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { ProductModel } from "src/app/products/models/product.model";
 import { HighlightDirective } from "src/app/shared/directives/highlight.directive";
 
@@ -20,18 +20,20 @@ export class CartItemComponent {
     @Output() remove = new EventEmitter<ProductModel>();
     @Output() quantityChange = new EventEmitter<number>();
 
-    changeQuantity(newQuantity: number, inputElement: EventTarget | null = null): void {
-        if (!isNaN(newQuantity) && newQuantity >= this.minQuantity && newQuantity <= this.maxQuantity) {
-            this.quantityChange.emit(newQuantity);
+    @ViewChild("input") inputElement!: ElementRef<HTMLInputElement>;
+
+    changeQuantity(value: number): void {
+        if (value > this.maxQuantity) {
+            value = this.maxQuantity;
+        } else if (value < this.minQuantity) {
+            value = this.minQuantity;
         }
-        else if (inputElement instanceof HTMLInputElement) {
-            if (isNaN(newQuantity) || newQuantity < this.minQuantity) {
-                inputElement.valueAsNumber = this.minQuantity;
-            }
-            else {
-                inputElement.valueAsNumber = this.maxQuantity;
-            }
-            this.quantityChange.emit(inputElement.valueAsNumber);
+
+        if (isNaN(value) || this.quantity === value) {
+            this.inputElement.nativeElement.valueAsNumber = this.quantity;
+            return;
         }
+
+        this.quantityChange.emit(value);
     }
 }
