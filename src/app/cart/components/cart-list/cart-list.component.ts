@@ -7,13 +7,15 @@ import { CartItemComponent } from "../cart-item/cart-item.component";
 import { CartItemModel } from "../../models/cart-item.model";
 import { FilterCartItemsByCategoryPipe } from "../../pipes/filter-cart-items-by-category.pipe";
 import { map } from "rxjs";
+import { OrderByPipe } from "src/app/shared/pipes/order-by.pipe";
+import { DeepKeyOf } from "src/app/shared/deepkeyof.type";
 
 @Component({
     selector: "app-cart-list",
     standalone: true,
     templateUrl: "./cart-list.component.html",
     styleUrls: ["./cart-list.component.css"],
-    imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe]
+    imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe, OrderByPipe]
 })
 export class CartListComponent {
     isCartPopupOpen: boolean = false;
@@ -22,6 +24,12 @@ export class CartListComponent {
         map(cartItems => new Set(cartItems.map(item => item.product.category))));
 
     quantityMapping: { [key: string]: string } = { "=1": "# pc.", other: "# pcs." };
+    sortOptions = [
+        { name: 'ASC', value: true },
+        { name: 'DESC', value: false },
+    ];
+    readonly orderByProps: Array<DeepKeyOf<CartItemModel>> = ["cost", "quantity", "product.name"];
+    orderByAsc: boolean = false;
 
     constructor(public readonly cartService: CartService,
         private readonly productsService: ProductsService) {
@@ -57,5 +65,9 @@ export class CartListComponent {
         } else if (newQuantity < cartItem.quantity) {
             this.cartService.decreaseQuantity(cartItem.product, cartItem.quantity - newQuantity);
         }
+    }
+
+    onSortOptionChange(value: string): void {
+        this.orderByAsc = value === "true";
     }
 }

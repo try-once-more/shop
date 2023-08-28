@@ -1,7 +1,7 @@
 <div class="cart-container">
     <ng-container *ngIf="this.cartService.totalQuantity() as totalQuantity; else randomButton">
         <button (click)="toggleCart()">
-            {{isCartPopupOpen?'Close Cart':'Open Cart'}} 
+            {{isCartPopupOpen?'Close Cart':'Open Cart'}}
             ({{totalQuantity | i18nPlural: quantityMapping}} / {{this.cartService.totalCost() | currency}})
         </button>
         <button (click)="clearCart()" class="red-button">Clear Cart</button>
@@ -11,11 +11,16 @@
     </ng-template>
 </div>
 <div *ngIf="isCartPopupOpen" class="overlay">
-    <div class="popup-container">Total: {{this.cartService.totalCost() | currency}}
+    <div class="popup-container">
+        <P>Total: {{this.cartService.totalCost() | currency}}</P>
+        Order by
+        <select #orderBy (change)="onSortOptionChange(orderBy.value)">
+            <option *ngFor="let so of sortOptions" [value]="so.value" [selected]="so.value === orderByAsc">{{ so.name }}</option>
+        </select>
         <ng-container *ngFor="let category of categories$ | async">
             <p class="centered-text">{{category}}</p>
             <app-cart-item
-                *ngFor="let cartItem of (cartItems$ | async | filterCartItemsByCategory: category); trackBy : trackProductByName"
+                *ngFor="let cartItem of (cartItems$ | async | filterCartItemsByCategory: category | orderBy: orderByProps: orderByAsc); trackBy : trackProductByName"
                 [product]="cartItem.product"
                 [quantity]="cartItem.quantity"
                 (remove)="onRemoveItem($event)"
