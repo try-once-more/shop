@@ -10,6 +10,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## v1.0.4 - 2023-08-29
+
+### Added
+
+- OrderByPipe with the ability to sort any arrays by any properties, including properties of nested objects [`ec92e56`](https://github.com/try-once-more/shop/commit/ec92e5631d05868724d862feb216a7e0abe95a72)
+- currency pipe to CartItemComponent, CartListComponent and ProductComponent [`efd1112`](https://github.com/try-once-more/shop/commit/efd111236fe831ab336430a622d2578ac2d3f872)
+- uppercase pipe to CartItemComponent and ProductComponent [`5ff19fc`](https://github.com/try-once-more/shop/commit/5ff19fc26a1b538d3113d70dcc8488da0e12d5d3)
+- DeepKeyOf&lt;T&gt; type [`3c06524`](https://github.com/try-once-more/shop/commit/3c0652419397302ddc55a3951de0a29db2c0c658)
+- i18nPlural pipe to CartListComponent [`697353a`](https://github.com/try-once-more/shop/commit/697353a90cd8172bee16594012472bfef7454a58)
+
+### Fixed
+
+- increase and decrease in quantity [`8acc0ad`](https://github.com/try-once-more/shop/commit/8acc0ad4313ff27398777bc6e5d9d1bf721f7048)
+- automatic update of the changelog when upgrading to a new version [`67bed7e`](https://github.com/try-once-more/shop/commit/67bed7e4fa91412173164f378ebecd6c511c8ad6)
+
+### Changed
+
+- appChangeStyle which allows change borders by pressing ctrl+click keys [`4fbca6e`](https://github.com/try-once-more/shop/commit/4fbca6e3fc6b789e539f6ab966ed7325af32b5d4)
+
 ## v1.0.3 - 2023-08-21
 
 ### Added
