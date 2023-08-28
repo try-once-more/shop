@@ -21,6 +21,8 @@ export class CartListComponent {
     categories$ = this.cartItems$.pipe(
         map(cartItems => new Set(cartItems.map(item => item.product.category))));
 
+    quantityMapping: { [key: string]: string } = { "=1": "# pc.", other: "# pcs." };
+
     constructor(public readonly cartService: CartService,
         private readonly productsService: ProductsService) {
     }

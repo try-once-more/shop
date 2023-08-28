@@ -2,7 +2,7 @@
     <ng-container *ngIf="this.cartService.totalQuantity() as totalQuantity; else randomButton">
         <button (click)="toggleCart()">
             {{isCartPopupOpen?'Close Cart':'Open Cart'}} 
-            ({{totalQuantity}} / {{this.cartService.totalCost() | currency}})
+            ({{totalQuantity | i18nPlural: quantityMapping}} / {{this.cartService.totalCost() | currency}})
         </button>
         <button (click)="clearCart()" class="red-button">Clear Cart</button>
     </ng-container>
