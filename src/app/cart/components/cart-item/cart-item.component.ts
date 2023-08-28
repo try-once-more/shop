@@ -1,5 +1,5 @@
 
-import { CurrencyPipe } from "@angular/common";
+import { CurrencyPipe, UpperCasePipe } from "@angular/common";
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from "@angular/core";
 import { ProductModel } from "src/app/products/models/product.model";
 import { HighlightDirective } from "src/app/shared/directives/highlight.directive";
@@ -9,7 +9,7 @@ import { HighlightDirective } from "src/app/shared/directives/highlight.directiv
     standalone: true,
     templateUrl: "./cart-item.component.html",
     styleUrls: ["./cart-item.component.css"],
-    imports: [HighlightDirective, CurrencyPipe]
+    imports: [HighlightDirective, CurrencyPipe, UpperCasePipe]
 })
 export class CartItemComponent {
     @Input({ required: true }) product!: ProductModel;
