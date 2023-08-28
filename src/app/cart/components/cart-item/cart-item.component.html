@@ -1,6 +1,6 @@
 <div class="item-details" appHighlight>
     <p class="item-name">{{product.name}}</p>
-    <p class="item-price bold">${{(product.price * quantity).toFixed(2)}}</p>
+    <p class="item-price bold">{{product.price * quantity | currency}}</p>
     <button
         [disabled]="quantity<=minQuantity"
         (click)="changeQuantity(input.valueAsNumber - step)"> −

@@ -1,7 +1,8 @@
 <div class="cart-container">
     <ng-container *ngIf="this.cartService.totalQuantity() as totalQuantity; else randomButton">
         <button (click)="toggleCart()">
-            {{isCartPopupOpen?'Close Cart':'Open Cart'}} ({{totalQuantity}}/${{this.cartService.totalCost()}})
+            {{isCartPopupOpen?'Close Cart':'Open Cart'}} 
+            ({{totalQuantity}} / {{this.cartService.totalCost() | currency}})
         </button>
         <button (click)="clearCart()" class="red-button">Clear Cart</button>
     </ng-container>
@@ -10,7 +11,7 @@
     </ng-template>
 </div>
 <div *ngIf="isCartPopupOpen" class="overlay">
-    <div class="popup-container">Total: ${{this.cartService.totalCost()}}
+    <div class="popup-container">Total: {{this.cartService.totalCost() | currency}}
         <ng-container *ngFor="let category of categories$ | async">
             <p class="centered-text">{{category}}</p>
             <app-cart-item
