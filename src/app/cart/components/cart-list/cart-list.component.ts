@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { CartService } from "../../services/cart.service";
 import { ProductModel } from "src/app/products/models/product.model";
-import { ProductsService } from "src/app/products/services/products.service";
 import { CommonModule } from "@angular/common";
 import { CartItemComponent } from "../cart-item/cart-item.component";
 import { CartItemModel } from "../../models/cart-item.model";
@@ -9,6 +8,7 @@ import { FilterCartItemsByCategoryPipe } from "../../pipes/filter-cart-items-by-
 import { map } from "rxjs";
 import { OrderByPipe } from "src/app/shared/pipes/order-by.pipe";
 import { DeepKeyOf } from "src/app/shared/deepkeyof.type";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "app-cart-list",
@@ -18,12 +18,10 @@ import { DeepKeyOf } from "src/app/shared/deepkeyof.type";
     imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe, OrderByPipe]
 })
 export class CartListComponent {
-    isCartPopupOpen: boolean = false;
     cartItems$ = this.cartService.getProducts();
     categories$ = this.cartItems$.pipe(
         map(cartItems => new Set(cartItems.map(item => item.product.category))));
 
-    quantityMapping: { [key: string]: string } = { "=1": "# pc.", other: "# pcs." };
     sortOptions = [
         { name: 'ASC', value: true },
         { name: 'DESC', value: false },
@@ -32,20 +30,7 @@ export class CartListComponent {
     orderByAsc: boolean = false;
 
     constructor(public readonly cartService: CartService,
-        private readonly productsService: ProductsService) {
-    }
-
-    toggleCart(): void {
-        this.isCartPopupOpen = !this.isCartPopupOpen;
-    }
-
-    buyRandom(): void {
-        this.cartService.addProduct(this.productsService.getRandomProduct());
-    }
-
-    clearCart(): void {
-        this.cartService.removeAllProducts();
-        this.isCartPopupOpen = false;
+        private readonly router: Router) {
     }
 
     trackProductByName(_: number, item: CartItemModel): string {
@@ -55,7 +40,7 @@ export class CartListComponent {
     onRemoveItem(product: ProductModel): void {
         this.cartService.removeProduct(product);
         if (this.cartService.isEmptyCart()) {
-            this.isCartPopupOpen = false;
+            this.router.navigateByUrl("/products-list");
         }
     }
 

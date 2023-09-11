@@ -1,0 +1,24 @@
+.header-container {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 5px 10px 5px 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+
+    .random-button {
+        background-color: darkorchid;
+    }
+
+    .random-button:hover {
+        background-color: rgb(114, 53, 145);
+    }
+}
+
+.header-container button {
+    margin-left: 10px;
+}
