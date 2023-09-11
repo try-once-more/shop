@@ -9,16 +9,21 @@ import { LocalStorageService } from "src/app/core/services/local-storage.service
     providedIn: "root"
 })
 export class CartService {
-    private readonly _cartProducts = new BehaviorSubject<ReadonlyArray<CartItemModel>>([]);
+    private readonly ADDED_TO_CART_KEY = "ADDED_TO_CART";
+    private readonly _cartProducts: BehaviorSubject<ReadonlyArray<CartItemModel>>;
     private readonly _totalQuantity = signal(0);
     private readonly _totalCost = signal(0);
     private readonly _isEmptyCart = signal(true);
-
+    
     totalQuantity = this._totalQuantity.asReadonly();
     totalCost = this._totalCost.asReadonly();
     isEmptyCart = this._isEmptyCart.asReadonly();
 
-    constructor(@Optional() private localStorageService: LocalStorageService) { }
+    constructor(@Optional() private localStorageService: LocalStorageService) {
+        
+        const addedToCart = this.initCart();
+        this._cartProducts = new BehaviorSubject(addedToCart);
+     }
 
     getProducts(): Observable<ReadonlyArray<CartItemModel>> {
         return this._cartProducts.asObservable();
@@ -34,7 +39,7 @@ export class CartService {
             const cost = MathHelper.round(quantity * product.price);
             this._cartProducts.next(this._cartProducts.getValue().concat({ product: product, quantity: quantity, cost: cost }));
             this.updateState(quantity, cost);
-            this.localStorageService?.setItem(product.name, `${new Date(Date.now())}`);
+            this.saveCartState();
         } else {
             this.increaseQuantity(product, quantity);
         }
@@ -45,24 +50,26 @@ export class CartService {
         if (itemToRemove) {
             this._cartProducts.next(this._cartProducts.getValue().filter(x => x.product !== product));
             this.updateState(-itemToRemove.quantity, -itemToRemove.cost);
-
-            this.localStorageService?.removeItem(product.name);
         }
+
+        this.saveCartState();
     }
 
     removeAllProducts(): void {
         this._cartProducts.next([]);
         this.updateState(-this.totalQuantity(), -this.totalCost());
 
-        this.localStorageService?.clear();
+        this.saveCartState();
     }
 
     increaseQuantity(product: ProductModel, quantity: number): void {
         this.changeQuantity(product, quantity);
+        this.saveCartState();
     }
 
     decreaseQuantity(product: ProductModel, quantity: number): void {
         this.changeQuantity(product, -quantity);
+        this.saveCartState();
     }
 
     private changeQuantity(product: ProductModel, diffQuantity: number): void {
@@ -81,5 +88,29 @@ export class CartService {
         this._totalQuantity.update(value => value + quantityToAdd);
         this._totalCost.update(value => MathHelper.round(value + costToAdd));
         this._isEmptyCart.set(!this._cartProducts.getValue().length);
+    }
+
+    private saveCartState() {
+        this.localStorageService?.setItem(this.ADDED_TO_CART_KEY, JSON.stringify(this._cartProducts.getValue()))
+    }
+
+    private initCart(): ReadonlyArray<CartItemModel> {
+        const data = this.localStorageService?.getItem(this.ADDED_TO_CART_KEY);
+        if (!data) {
+            return [];
+        }
+        const addedToCart: CartItemModel[] = JSON.parse(data);
+
+        let totalQuantity = 0;
+        let totalCost = 0;
+        addedToCart.forEach(x => {
+            totalQuantity += x.quantity;
+            totalCost = MathHelper.round(totalCost + x.quantity * x.cost);
+        });
+        this._totalQuantity.update(_ => totalQuantity);
+        this._totalCost.update(_ => totalCost);
+        this._isEmptyCart.set(!addedToCart.length);
+
+        return addedToCart;
     }
 }
