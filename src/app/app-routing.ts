@@ -1,9 +1,6 @@
 import { Routes } from "@angular/router";
-import { ProductListComponent } from "./products/components/product-list/product-list.component";
-import { ProductComponent } from "./products/components/product/product.component";
-import { productResolver } from "./products/resolvers/product-resolver";
-import { productTitleResolver } from "./products/resolvers/product-title-resolver";
-import { CartListComponent } from "./cart/components/cart-list/cart-list.component";
+import { productRoutes } from "./products/product.routing";
+import { cartRoutes } from "./cart/cart.routing";
 
 export const APP_ROUTES: Routes = [
     {
@@ -11,16 +8,8 @@ export const APP_ROUTES: Routes = [
         redirectTo: "products-list",
         pathMatch: "full"
     },
-    { path: "products-list", component: ProductListComponent },
-    { 
-        path: "product/:productID",
-        component: ProductComponent,
-        title: productTitleResolver,
-        resolve: {
-            product: productResolver
-        }
-    },
-    { path: "cart", component: CartListComponent },
+    ...productRoutes,
+    ...cartRoutes,
     {
         path: "**",
         redirectTo: "products-list",
