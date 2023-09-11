@@ -6,6 +6,8 @@ import { GeneratorFactory } from "./app/core/services/generator.factory";
 import { GeneratorService } from "./app/shared/services/generator.service";
 import { LocalStorageService } from "./app/core/services/local-storage.service";
 import { DEFAULT_CURRENCY_CODE, LOCALE_ID } from "@angular/core";
+import { provideRouter } from "@angular/router";
+import { APP_ROUTES } from "./app/app-routing";
 
 const constants = {
     App: "Shop",
@@ -15,6 +17,7 @@ const constants = {
 
 bootstrapApplication(AppComponent, {
     providers: [
+        provideRouter(APP_ROUTES),
         { provide: ConstantsServiceToken, useValue: constants },
         { provide: GeneratedStringToken, useFactory: GeneratorFactory, deps: [GeneratorService] },
         { provide: LocalStorageService, useValue: new LocalStorageService() },
