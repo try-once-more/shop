@@ -4,7 +4,7 @@ import { ProductComponent } from "./components/product/product.component";
 import { productTitleResolver } from "./resolvers/product-title-resolver";
 import { productResolver } from "./resolvers/product-resolver";
 
-export const productRoutes: Routes = [
+export const PRODUCT_ROUTES: Routes = [
     { path: "products-list", component: ProductListComponent },
     {
         path: "product/:productID",

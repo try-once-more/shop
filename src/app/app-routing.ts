@@ -1,18 +1,17 @@
 import { Routes } from "@angular/router";
-import { productRoutes } from "./products/product.routing";
-import { cartRoutes } from "./cart/cart.routing";
+import { CART_ROUTES } from "./cart/cart.routing";
+import { PRODUCT_ROUTES } from "./products/product.routing";
 
 export const APP_ROUTES: Routes = [
     {
         path: "",
-        redirectTo: "products-list",
-        pathMatch: "full"
+        pathMatch: "full",
+        redirectTo: "products-list"
     },
-    ...productRoutes,
-    ...cartRoutes,
+    ...PRODUCT_ROUTES,
+    ...CART_ROUTES,
     {
         path: "**",
         redirectTo: "products-list",
-        pathMatch: "full"
-    },
+    }
 ];

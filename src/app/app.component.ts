@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
 import { ProductListComponent } from "./products/components/product-list/product-list.component";
 import { Constants, ConstantsServiceToken } from "./core/services/constant.service";
-import { RouterModule } from "@angular/router";
+import { RouterOutlet } from "@angular/router";
 import { HeaderComponent } from "./core/components/header/header.component";
 
 @Component({
@@ -9,7 +9,7 @@ import { HeaderComponent } from "./core/components/header/header.component";
     standalone: true,
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.css"],
-    imports: [HeaderComponent, ProductListComponent, RouterModule]
+    imports: [HeaderComponent, ProductListComponent, RouterOutlet]
 })
 export class AppComponent implements OnInit, AfterViewInit {
 
