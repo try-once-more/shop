@@ -13,7 +13,8 @@ import { ProductComponent } from "../product/product.component";
     imports: [CommonModule, ProductComponent]
 })
 export class ProductListComponent implements OnInit {
-    productList!: ProductModel[];
+	// тут тип должен быть Promise или Observable
+	productList!: ProductModel[];
 
     constructor(private readonly productsService: ProductsService,
         private readonly cartService: CartService) { }
