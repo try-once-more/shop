@@ -1,8 +1,8 @@
 import { Directive, ElementRef, HostListener, Input, Renderer2 } from "@angular/core";
 
 @Directive({
-    standalone: true,
-    selector: "[appChangeStyle]"
+    selector: "[appChangeStyle]",
+    standalone: true
 })
 export class ChangeStyleDirective {
     @Input() border: string = "1px solid red"
@@ -10,14 +10,16 @@ export class ChangeStyleDirective {
     constructor(private readonly el: ElementRef,
         private readonly renderer: Renderer2) { }
 
-    @HostListener("click") onClick() {
-        const currentBorder = this.el?.nativeElement.style.border;
-        if (currentBorder) {
-            this.renderer?.removeStyle(this.el.nativeElement, "border");
-        } else {
-            this.renderer?.setStyle(this.el.nativeElement, "border", this.border);
+    @HostListener("click", ["$event"]) onClick(event: MouseEvent) {
+        if (event.ctrlKey || event.metaKey) {
+            const currentBorder = this.el?.nativeElement.style.border;
+            if (currentBorder) {
+                this.renderer?.removeStyle(this.el.nativeElement, "border");
+            } else {
+                this.renderer?.setStyle(this.el.nativeElement, "border", this.border);
+            }
+            this.border = currentBorder;
         }
-        this.border = currentBorder;
     }
 
     @HostListener("wheel", ["$event"]) onScroll(event: WheelEvent) {

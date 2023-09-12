@@ -1,8 +1,8 @@
 import { Directive, HostBinding, HostListener, Input } from "@angular/core";
 
 @Directive({
-    standalone: true,
-    selector: "[appHighlight]"
+    selector: "[appHighlight]",
+    standalone: true
 })
 export class HighlightDirective {
     @Input() color: string = "lightgray";

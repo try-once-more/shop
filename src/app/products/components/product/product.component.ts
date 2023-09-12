@@ -4,8 +4,8 @@ import { CommonModule } from "@angular/common";
 import { ChangeStyleDirective } from "src/app/shared/directives/change-style.directive";
 
 @Component({
-    standalone: true,
     selector: "app-product",
+    standalone: true,
     templateUrl: "./product.component.html",
     styleUrls: ["./product.component.css"],
     imports: [CommonModule, ChangeStyleDirective]

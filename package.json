@@ -1,13 +1,13 @@
 {
     "name": "shop",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "scripts": {
         "ng": "ng",
         "start": "ng serve -o",
         "build": "ng build",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
-        "version": "auto-changelog -p && git add CHANGELOG.md"
+        "postversion": "auto-changelog -p && git add Changelog.md && git commit --amend --no-edit"
     },
     "private": true,
     "dependencies": {

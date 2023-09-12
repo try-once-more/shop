@@ -5,6 +5,7 @@ import { GeneratedStringToken } from "./app/core/services/generated-string.token
 import { GeneratorFactory } from "./app/core/services/generator.factory";
 import { GeneratorService } from "./app/shared/services/generator.service";
 import { LocalStorageService } from "./app/core/services/local-storage.service";
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID } from "@angular/core";
 
 const constants = {
     App: "Shop",
@@ -15,7 +16,9 @@ const constants = {
 bootstrapApplication(AppComponent, {
     providers: [
         { provide: ConstantsServiceToken, useValue: constants },
-        { provide: GeneratedStringToken, useFactory: GeneratorFactory, deps: [GeneratorService]},
-        { provide: LocalStorageService, useValue: new LocalStorageService() }
+        { provide: GeneratedStringToken, useFactory: GeneratorFactory, deps: [GeneratorService] },
+        { provide: LocalStorageService, useValue: new LocalStorageService() },
+        { provide: DEFAULT_CURRENCY_CODE, useValue: "USD" },
+        { provide: LOCALE_ID, useValue: "en-US" }
     ]
-}).catch(err => console.error(err));
+}).catch((error: Error) => console.error(error));
