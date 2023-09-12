@@ -1,7 +1,23 @@
-<h1 #appTitle></h1>
-<div class="header">
-    <app-header></app-header>
-</div>
-<div class="content">
-    <router-outlet></router-outlet>
-</div>
+<nav class="navbar navbar-expand sticky-top navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <span class="navbar-brand h1" #appTitle>Title</span>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/products-list" active>Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/cart/order">Orders</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <button class="nav-link" routerLink="/cart">
+                    Cart <app-cart-icon/>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<router-outlet></router-outlet>

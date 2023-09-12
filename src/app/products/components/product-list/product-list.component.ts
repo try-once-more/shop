@@ -9,7 +9,6 @@ import { ProductComponent } from "../product/product.component";
     selector: "app-product-list",
     standalone: true,
     templateUrl: "./product-list.component.html",
-    styleUrls: ["./product-list.component.css"],
     imports: [CommonModule, ProductComponent]
 })
 export class ProductListComponent implements OnInit {

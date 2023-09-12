@@ -1,15 +1,14 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from "@angular/core";
 import { ProductListComponent } from "./products/components/product-list/product-list.component";
 import { Constants, ConstantsServiceToken } from "./core/services/constant.service";
-import { RouterOutlet } from "@angular/router";
-import { HeaderComponent } from "./core/components/header/header.component";
+import { RouterLink, RouterOutlet } from "@angular/router";
+import { CartIconComponent } from "./cart/components/cart-icon/cart-icon.component";
 
 @Component({
     selector: "app-root",
     standalone: true,
     templateUrl: "./app.component.html",
-    styleUrls: ["./app.component.css"],
-    imports: [HeaderComponent, ProductListComponent, RouterOutlet]
+    imports: [ProductListComponent, RouterLink, RouterOutlet, CartIconComponent]
 })
 export class AppComponent implements OnInit, AfterViewInit {
 

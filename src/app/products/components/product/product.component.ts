@@ -7,7 +7,6 @@ import { ChangeStyleDirective } from "src/app/shared/directives/change-style.dir
     selector: "app-product",
     standalone: true,
     templateUrl: "./product.component.html",
-    styleUrls: ["./product.component.css"],
     imports: [CommonModule, ChangeStyleDirective]
 })
 export class ProductComponent {

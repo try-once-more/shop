@@ -1,19 +1,46 @@
-<div class="overlay">
-    <div class="popup-container">
-        <P>Total: {{this.cartService.totalCost() | currency}}</P>
-        Order by
-        <select #orderBy (change)="onSortOptionChange(orderBy.value)">
-            <option *ngFor="let so of sortOptions" [value]="so.value" [selected]="so.value === orderByAsc">{{ so.name }}</option>
-        </select>
-        <ng-container *ngFor="let category of categories$ | async">
-            <p class="centered-text">{{category}}</p>
+<ng-container *ngIf="this.cartService.totalQuantity() as totalQuantity; else randomButton">
+    <nav class="navbar navbar-expand navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="navbar-collapse">
+                <span class="navbar-text">Order by:</span>
+                <select class="nav-item form-control-sm" #orderBy 
+                    (change)="onSortOptionChange(orderBy.value)">
+                    <option *ngFor="let so of sortOptions"
+                        [value]="so.value"
+                        [selected]="so.value === orderByAsc">
+                        {{ so.name }}
+                    </option>
+                </select>
+                <label class="col-auto col-form-label mx-auto h1">Total:
+                    {{ this.cartService.totalCost() | currency }} -
+                    {{ totalQuantity | i18nPlural: quantityMapping}}</label>
+                <li class="navbar-nav nav-item">
+                    <button class="btn btn-sm btn-outline-danger"
+                        (click)="clearCart()">Clear Cart
+                    </button>
+                </li>
+            </div>
+        </div>
+    </nav>
+
+    <ng-container *ngFor="let category of categories$ | async">
+        <div class="card mb-1">
+            <h4 class="card-title text-center">{{category}}</h4>
             <app-cart-item
-                *ngFor="let cartItem of (cartItems$ | async | filterCartItemsByCategory: category | orderBy: orderByProps: orderByAsc); trackBy : trackProductByName"
+                *ngFor="let cartItem of 
+                    (cartItems$ | async | filterCartItemsByCategory: category | orderBy: orderByProps: orderByAsc);
+                    trackBy : trackProductByName"
                 [product]="cartItem.product"
                 [quantity]="cartItem.quantity"
                 (remove)="onRemoveItem($event)"
                 (quantityChange)="onQuantityChange(cartItem, $event)">
             </app-cart-item>
-        </ng-container>
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-template #randomButton>
+    <div class="row w-50 mx-auto">
+        <button type="button" (click)="buyRandom()" class="btn btn-outline-primary">Buy something random!</button>
     </div>
-</div>
+</ng-template>

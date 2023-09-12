@@ -1,0 +1,7 @@
+<span *ngIf="cartService.totalCost() as cost" 
+    class="position-relative badge rounded-pill bg-secondary">
+    {{cost|currency}}
+</span>
+<i class="bi bi-cart"></i>
+<span *ngIf="cartService.totalCost()" class="position-absolute p-1 bg-danger rounded-circle">
+</span>

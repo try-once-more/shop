@@ -1,20 +1,40 @@
-<div class="item-details" appHighlight>
-    <p class="item-name">{{product.name | uppercase}}</p>
-    <p class="item-price bold">{{product.price * quantity | currency}}</p>
-    <button
-        [disabled]="quantity<=minQuantity"
-        (click)="changeQuantity(input.valueAsNumber - step)"> −
-    </button>
-    <input
-        #input type="number"
-        [value]="quantity"
-        [step]="step"
-        [min]="minQuantity"
-        [max]="maxQuantity"
-        (input)="changeQuantity(input.valueAsNumber)"/>
-    <button
-        [disabled]="quantity>=maxQuantity"
-        (click)="changeQuantity(input.valueAsNumber + step)"> +
-    </button>
-    <button (click)="this.remove.emit(this.product)" class="red-button">X</button>
+<div class="row g-0">
+    <div class="col-1">
+        <img src="..." class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col">
+        <div class="row g-0">
+            <span class="col card-text">
+                {{product.name | uppercase}}
+            </span>
+            <span  class="col-md-auto text-end card-text align-middle">
+                {{product.price * quantity | currency}}
+            </span >
+            
+            <div class="col-md-auto text-end">
+                <button class="btn btn-link"
+                    [disabled]="quantity<=minQuantity"
+                    (click)="changeQuantity(input.valueAsNumber - step)">
+                    <i class="bi bi-dash-circle"></i>
+                </button>
+                <input #input
+                    type="number"
+                    [value]="quantity"
+                    [step]="step"
+                    [min]="minQuantity"
+                    [max]="maxQuantity"
+                    (input)="changeQuantity(input.valueAsNumber)"
+                    autocomplete="off"/>
+                <button class="btn btn-link"
+                    [disabled]="quantity>=maxQuantity"
+                    (click)="changeQuantity(input.valueAsNumber + step)">
+                    <i class="bi bi-plus-circle"></i>
+                </button>
+                <button class="btn btn-link"
+                    (click)="this.remove.emit(this.product)">
+                    <i class="bi bi-trash text-danger"></i>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

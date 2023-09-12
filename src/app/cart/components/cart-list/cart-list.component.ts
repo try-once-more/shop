@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { CartService } from "../../services/cart.service";
 import { ProductModel } from "src/app/products/models/product.model";
 import { CommonModule } from "@angular/common";
@@ -9,19 +9,23 @@ import { map } from "rxjs";
 import { OrderByPipe } from "src/app/shared/pipes/order-by.pipe";
 import { DeepKeyOf } from "src/app/shared/deepkeyof.type";
 import { Router } from "@angular/router";
+import { ProductsService } from "src/app/products/services/products.service";
 
 @Component({
     selector: "app-cart-list",
     standalone: true,
     templateUrl: "./cart-list.component.html",
-    styleUrls: ["./cart-list.component.css"],
     imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe, OrderByPipe]
 })
 export class CartListComponent {
+    private readonly productsService = inject(ProductsService);
+    readonly cartService = inject(CartService);
+
     cartItems$ = this.cartService.getProducts();
     categories$ = this.cartItems$.pipe(
         map(cartItems => new Set(cartItems.map(item => item.product.category))));
 
+    quantityMapping: { [key: string]: string } = { "=1": "# pc.", other: "# pcs." };
     sortOptions = [
         { name: 'ASC', value: true },
         { name: 'DESC', value: false },
@@ -29,8 +33,7 @@ export class CartListComponent {
     readonly orderByProps: Array<DeepKeyOf<CartItemModel>> = ["cost", "quantity", "product.name"];
     orderByAsc: boolean = false;
 
-    constructor(public readonly cartService: CartService,
-        private readonly router: Router) {
+    constructor(private readonly router: Router) {
     }
 
     trackProductByName(_: number, item: CartItemModel): string {
@@ -54,5 +57,13 @@ export class CartListComponent {
 
     onSortOptionChange(value: string): void {
         this.orderByAsc = value === "true";
+    }
+
+    clearCart(): void {
+        this.cartService.removeAllProducts();
+    }
+
+    buyRandom(): void {
+        this.cartService.addProduct(this.productsService.getRandomProduct());
     }
 }

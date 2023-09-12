@@ -1,7 +1,14 @@
-<div class="product-container" appChangeStyle [border]="'5px solid red'">
-    <div class="product-content" [ngClass]="{'not-available': !product.isAvailable}">
-        <div class="product-header; bold">{{ product.price | currency}} | {{ product.name | uppercase }} | {{ product.category }}</div>
-        <div>{{product.description || "No description"}}</div>
-    </div>
-    <button [disabled]="!product.isAvailable" (click)="onAddToCart()">Buy</button>
+<div class="card mb-1" [ngClass]="{'opacity-50': !product.isAvailable}" appChangeStyle [border]="'5px solid red'">
+    <div class="row g-0">
+        <div class="col text-truncate">
+            <div class="card-title h6 ">
+                {{ product.price | currency}} | {{ product.name | uppercase }} | {{ product.category}}
+            </div>
+            <span class="card-subtitle fw-lighter text-wrap">{{product.description || "No description"}}</span>
+        </div>
+        <div class="col-auto d-flex align-items-stretch">
+            <button class="btn btn-sm btn btn-outline-primary " [disabled]="!product.isAvailable" (click)="onAddToCart()">Buy</button>
+        </div>
+    </div>    
 </div>
+
