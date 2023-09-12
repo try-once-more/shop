@@ -1,4 +1,4 @@
-<app-product *ngFor="let product of productList"
+<app-product *ngFor="let product of products$ | async"
     [product]="product"
     (addToCart)="onAddToCart($event)">
 </app-product>

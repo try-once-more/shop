@@ -1,6 +1,6 @@
 import { inject } from "@angular/core";
 import { ActivatedRouteSnapshot, ResolveFn, Router, RouterStateSnapshot } from "@angular/router";
-import { EMPTY } from "rxjs";
+import { EMPTY, of, switchMap } from "rxjs";
 import { ProductsService } from "../services/products.service";
 
 export const productTitleResolver: ResolveFn<string> =
@@ -10,10 +10,16 @@ export const productTitleResolver: ResolveFn<string> =
 
         const productID = +(route.paramMap.get("productID") ?? NaN);
         if (!isNaN(productID)) {
-            const user = productsService.getProducts().find(x => x.id === productID);
-            if (user) {
-                return `${user.name}`;
-            }
+            return productsService.getProducts().pipe(
+                switchMap(products => {
+                    const productName = products?.find(x => x.id === productID)?.name;
+                    if (productName) {
+                        return of(productName);
+                    } else {
+                        return EMPTY;
+                    }
+                })
+            );
         }
 
         router.navigate([""]);

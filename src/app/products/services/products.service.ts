@@ -5,13 +5,14 @@ import { GeneratorService } from "src/app/shared/services/generator.service";
 import { MathHelper } from "src/app/shared/math.helper";
 import { GeneratedStringToken } from "src/app/core/services/generated-string.token";
 import { LocalStorageService } from "src/app/core/services/local-storage.service";
+import { BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
     providedIn: "root"
 })
 export class ProductsService {
     private readonly ALL_PRODUCTS_KEY = "ALL_PRODUCTS";
-    private readonly products: ProductModel[];
+    private products$: BehaviorSubject<ProductModel[]>;
 
     constructor(private readonly generatorService: GeneratorService,
         @Inject(GeneratedStringToken) private generatedString: (n: number) => string,
@@ -20,19 +21,21 @@ export class ProductsService {
         
         const data = this.localStorageService?.getItem(this.ALL_PRODUCTS_KEY);
         if (data) {
-            this.products = JSON.parse(data);
+            this.products$ = new BehaviorSubject(JSON.parse(data));
         } else {
-            this.products = this.generatorService.generateArray(100, (i) => this.generateRandomProduct(i));
-            localStorageService?.setItem(this.ALL_PRODUCTS_KEY, JSON.stringify(this.products))
+            const products = this.generatorService.generateArray(100, (i) => this.generateRandomProduct(i));
+            localStorageService?.setItem(this.ALL_PRODUCTS_KEY, JSON.stringify(products));
+            this.products$ = new BehaviorSubject(products);
         }
     }
 
-    getProducts(): ProductModel[] {
-        return this.products;
+    getProducts(): Observable<ProductModel[]> {
+        return this.products$.asObservable();
     }
 
     getRandomProduct(): ProductModel {
-        return this.products[this.generatorService.random(this.products.length)];
+        const products = this.products$.getValue();
+        return products[this.generatorService.random(products.length)];
     }
 
     private generateRandomProduct(_: number): ProductModel {
