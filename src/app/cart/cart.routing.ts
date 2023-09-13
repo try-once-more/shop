@@ -7,18 +7,11 @@ import { isCartEmptyGuard } from "../core/guards/is-cart-empty.guard";
 export const CART_ROUTES: Routes = [
     {
         path: "cart",
-        children: [
-            {
-                path: "",
-                pathMatch: "full",
-                component: CartListComponent
-            },
-            {
-                path: "order",
-                pathMatch: "full",
-                component: ProcessOrderComponent,
-                canActivate: [isCartEmptyGuard]
-            }
-        ]
+        component: CartListComponent
+    },
+    {
+        path: "cart/order",
+        component: ProcessOrderComponent,
+        canActivate: [isCartEmptyGuard]
     }
 ];

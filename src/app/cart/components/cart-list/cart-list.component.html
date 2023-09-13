@@ -3,7 +3,8 @@
         <div class="container-fluid">
             <div class="navbar-collapse">
                 <span class="navbar-text">Order by:</span>
-                <select class="nav-item form-control-sm" #orderBy 
+                <select class="nav-item form-control-sm"
+                    #orderBy
                     (change)="onSortOptionChange(orderBy.value)">
                     <option *ngFor="let so of sortOptions"
                         [value]="so.value"
@@ -13,12 +14,21 @@
                 </select>
                 <label class="col-auto col-form-label mx-auto h1">Total:
                     {{ this.cartService.totalCost() | currency }} -
-                    {{ totalQuantity | i18nPlural: quantityMapping}}</label>
-                <li class="navbar-nav nav-item">
-                    <button class="btn btn-sm btn-outline-danger"
-                        (click)="clearCart()">Clear Cart
-                    </button>
-                </li>
+                    {{ totalQuantity | i18nPlural: quantityMapping}}
+                </label>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item mx-2">
+                        <button class="btn btn-sm btn-outline-primary" (click)="goToOrder()">
+                            Order
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-sm btn-outline-danger" (click)="clearCart()">
+                            Clear Cart
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>

@@ -63,6 +63,10 @@ export class CartListComponent {
         this.cartService.removeAllProducts();
     }
 
+    goToOrder(): void {
+        this.router.navigateByUrl("cart/order");
+    }
+
     buyRandom(): void {
         this.cartService.addProduct(this.productsService.getRandomProduct());
     }
