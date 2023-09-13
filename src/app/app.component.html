@@ -13,8 +13,23 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <button class="nav-link" routerLink="/cart">
-                    Cart <app-cart-icon/>
+                        Cart <app-cart-icon />
                     </button>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                        {{authService.currentRole()?.name ?? 'Log in'}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <ng-container *ngIf="authService.currentRole(); else needLogIn">
+                            <button class="dropdown-item" (click)="logOut()">Log out</button>
+                        </ng-container>
+                        <ng-template #needLogIn>
+                            <li *ngFor="let role of authService.roles">
+                                <button class="dropdown-item" (click)="logIn(role)">{{role.name}}</button>
+                            </li>
+                        </ng-template>
+                    </ul>
                 </li>
             </ul>
         </div>

@@ -6,5 +6,4 @@ import { Component } from "@angular/core";
     templateUrl: "./process-order.component.html"
 })
 export class ProcessOrderComponent {
-
 }
