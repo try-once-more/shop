@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { ProductListComponent } from "./products/components/product-list/product-list.component";
 import { Constants, ConstantsServiceToken } from "./core/services/constant.service";
-import { RouterLink, RouterOutlet } from "@angular/router";
+import { Router, RouterLink, RouterOutlet } from "@angular/router";
 import { CartIconComponent } from "./cart/components/cart-icon/cart-icon.component";
 import { AuthService } from "./core/services/auth.service";
 import { NgFor, NgIf } from "@angular/common";
 import { RoleModel } from "./core/models/role-model";
-import { Subscription } from "rxjs";
+import { Subscription, tap } from "rxjs";
 
 @Component({
     selector: "app-root",
@@ -21,7 +21,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild("appTitle", { static: true }) appTitle!: ElementRef<HTMLHeadingElement>;
 
     constructor(@Inject(ConstantsServiceToken) private constants: Constants,
-        readonly authService: AuthService) {
+        readonly authService: AuthService,
+        private readonly router: Router) {
     }
 
     ngOnInit(): void {
@@ -38,7 +39,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
     logIn(role: RoleModel) {
         this.unsubscribe();
-        this.sub = this.authService.login(role).subscribe();
+        this.sub = this.authService.login(role).pipe(
+            tap(role => {
+                if (role.isAdmin) {
+                    this.router.navigateByUrl("admin");
+                }
+            })
+        ).subscribe();
     }
 
     logOut() {
