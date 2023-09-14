@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { AuthService } from "../services/auth.service";
 
 export const isAdminGuard: CanActivateFn =
@@ -9,5 +9,7 @@ export const isAdminGuard: CanActivateFn =
             return true;
         }
 
+        const router = inject(Router);
+        router.navigateByUrl("/403");
         return false;
     };
