@@ -4,11 +4,24 @@
             <div class="card-title h6 ">
                 {{ product.price | currency}} | {{ product.name | uppercase }} | {{ product.category}}
             </div>
-            <span class="card-subtitle fw-lighter text-wrap">{{product.description || "No description"}}</span>
+            <span class="card-subtitle fw-lighter text-wrap">
+                {{product.description || "No description"}}
+            </span>
         </div>
-        <div class="col-auto d-flex align-items-stretch">
-            <button class="btn btn-sm btn btn-outline-primary " [disabled]="!product.isAvailable" (click)="onAddToCart()">Buy</button>
+        <div class="col-auto d-flex align-items-stretch mx-1">
+            <button class="btn btn-sm btn btn-outline-primary"
+                [disabled]="!product.isAvailable"
+                (click)="onAddToCart()">Buy
+            </button>
+            <button *ngIf="canEdit"
+                class="btn-sm btn btn-outline-dark mx-1"
+                [routerLink]="['/admin/product/edit', product.id]">
+                <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-sm btn btn-outline-dark mx-1"
+                [routerLink]="['/product', product.id]">
+                <i class="bi bi-eye"></i>
+            </button>
         </div>
     </div>    
 </div>
-
