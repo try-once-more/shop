@@ -1,40 +1,30 @@
-<div class="row g-0">
-    <div class="col-1">
-        <img src="..." class="img-fluid rounded-start" alt="...">
-    </div>
-    <div class="col">
-        <div class="row g-0">
-            <span class="col card-text">
-                {{product.name | uppercase}}
-            </span>
-            <span  class="col-md-auto text-end card-text align-middle">
-                {{product.price * quantity | currency}}
-            </span >
-            
-            <div class="col-md-auto text-end">
-                <button class="btn btn-link"
-                    [disabled]="quantity<=minQuantity"
-                    (click)="changeQuantity(input.valueAsNumber - step)">
-                    <i class="bi bi-dash-circle"></i>
-                </button>
-                <input #input
-                    type="number"
-                    [value]="quantity"
-                    [step]="step"
-                    [min]="minQuantity"
-                    [max]="maxQuantity"
-                    (input)="changeQuantity(input.valueAsNumber)"
-                    autocomplete="off"/>
-                <button class="btn btn-link"
-                    [disabled]="quantity>=maxQuantity"
-                    (click)="changeQuantity(input.valueAsNumber + step)">
-                    <i class="bi bi-plus-circle"></i>
-                </button>
-                <button class="btn btn-link"
-                    (click)="this.remove.emit(this.product)">
-                    <i class="bi bi-trash text-danger"></i>
-                </button>
-            </div>
+<div class="card mb-1 px-2 mx-2">
+    <div class="row g-0 d-flex align-items-center">
+        <span class="col card-text">
+            {{product.name | uppercase}}
+        </span>
+        <span class="col-md-auto text-end">
+            {{product.price * quantity | currency}}
+        </span>
+        <div class="col-md-auto text-end">
+            <button class="btn btn-link p-0 m-2 bi-dash-square border-0"x
+                [disabled]="quantity<=minQuantity"
+                (click)="changeQuantity(input.valueAsNumber - step)">
+            </button>
+            <input #input type="number"
+                [value]="quantity"
+                [step]="step"
+                [min]="minQuantity"
+                [max]="maxQuantity"
+                (input)="changeQuantity(input.valueAsNumber)"
+                autocomplete="off" />
+            <button class="btn btn-link p-0 m-2 bi-plus-square border-0"
+                [disabled]="quantity>=maxQuantity"
+                (click)="changeQuantity(input.valueAsNumber + step)">
+            </button>
+            <button class="btn p-0 m-2 bi-trash text-danger border-0"
+                (click)="this.remove.emit(this.product)">
+            </button>
         </div>
     </div>
 </div>
