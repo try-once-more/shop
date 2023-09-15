@@ -14,12 +14,21 @@ import { Observable, of } from "rxjs";
     imports: [NgClass, FormsModule, NgFor, NgIf]
 })
 export class ProductViewComponent implements OnInit, CanComponentDeactivate {
-    @Input({ required: true }) product!: ProductModel;
-    editedProduct!: ProductModel;
+    @Input({ required: true }) product: ProductModel | undefined;
+
+    private goBackClicked = false;
+    private readonly emptyProduct: Partial<ProductModel> = {
+        isAvailable: false,
+        price: 0,
+        name: "",
+        description: "",
+    };
+    
+    editedProduct: Partial<ProductModel> = { ...this.emptyProduct };
     readonly categories: string[] = Object.values(Category);
     readonly viewOnly: boolean;
-    private goBackClicked = false;
 
+    
     constructor(private readonly router: Router,
         private readonly location: Location) {
 
@@ -27,17 +36,15 @@ export class ProductViewComponent implements OnInit, CanComponentDeactivate {
     }
 
     ngOnInit() {
-        this.editedProduct = this.product ? { ...this.product } : {
-            isAvailable: false,
-            price: 0,
-            name: "",
-            description: ""
-        } as ProductModel;
+        if (this.product) {
+            this.editedProduct = { ...this.product };
+        }
     }
 
     saveProduct() {
         if (!this.viewOnly) {
-            //TODO: Save changes
+            //TODO: Save changes. Set goBackClicked is temporary solution
+            this.goBackClicked = true;
         }
 
         this.location.back();
@@ -53,9 +60,10 @@ export class ProductViewComponent implements OnInit, CanComponentDeactivate {
             return true;
         }
 
-        const hasChanged = (Object.keys(this.product) as (keyof ProductModel)[])
-            .every(key => this.product[key] === this.editedProduct[key]);
-        
+        const sourceModel = this.product ?? this.emptyProduct;
+        const hasChanged = (Object.keys(this.editedProduct) as (keyof ProductModel)[])
+            .every(key => sourceModel[key] === this.editedProduct[key]);
+
         return hasChanged || of(window.confirm("Discard changes?"));
     }
 }

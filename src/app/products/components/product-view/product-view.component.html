@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-body">
-        <form (ngSubmit)="saveProduct()">
+        <form #form="ngForm" (ngSubmit)="saveProduct()">
             <div class="mb-1">
                 <div class="form-check form-switch">
                     <input
@@ -19,7 +19,8 @@
                 <label for="productName" class="form-label">
                     Name
                 </label>
-                <input [disabled]="viewOnly"
+                <input required
+                    [disabled]="viewOnly"
                     type="text"
                     id="productName"
                     class="form-control"
@@ -30,7 +31,8 @@
                 <label for="productDescription" class="form-label">
                     Description
                 </label>
-                <textarea [disabled]="viewOnly"
+                <textarea required
+                    [disabled]="viewOnly"
                     id="productDescription"
                     class="form-control"
                     [(ngModel)]="editedProduct.description"
@@ -41,7 +43,8 @@
                 <label for="productPrice" class="form-label">
                     Price
                 </label>
-                <input [disabled]="viewOnly"
+                <input required
+                    [disabled]="viewOnly"
                     type="number"
                     id="productPrice"
                     class="form-control"
@@ -52,7 +55,8 @@
                 <label for="productCategory" class="form-label">
                     Category
                 </label>
-                <select [disabled]="viewOnly"
+                <select required
+                    [disabled]="viewOnly"
                     id="productCategory"
                     class="form-select"
                     [(ngModel)]="editedProduct.category"
@@ -65,7 +69,7 @@
                 </select>
             </div>
             <div class="mb-1">
-                <button *ngIf="!viewOnly" type="submit" class="btn btn-primary">
+                <button [disabled]="!form.valid" *ngIf="!viewOnly" type="submit" class="btn btn-primary">
                     Save
                 </button>
                 <button type="button" class="btn btn-secondary" (click)="goBack()">
