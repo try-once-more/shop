@@ -8,6 +8,7 @@ import { LocalStorageService } from "./app/core/services/local-storage.service";
 import { DEFAULT_CURRENCY_CODE, LOCALE_ID } from "@angular/core";
 import { provideRouter, withComponentInputBinding } from "@angular/router";
 import { APP_ROUTES } from "./app/app-routing";
+import { provideHttpClient } from "@angular/common/http";
 
 const constants = {
     App: "Shop",
@@ -17,6 +18,7 @@ const constants = {
 
 bootstrapApplication(AppComponent, {
     providers: [
+        provideHttpClient(),
         provideRouter(APP_ROUTES, withComponentInputBinding()),
         { provide: ConstantsServiceToken, useValue: constants },
         { provide: GeneratedStringToken, useFactory: GeneratorFactory, deps: [GeneratorService] },
