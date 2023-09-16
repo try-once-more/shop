@@ -1,15 +1,17 @@
-import { Component, OnInit, inject } from "@angular/core";
+import { Component, DestroyRef, OnInit, inject } from "@angular/core";
 import { CartService } from "../../services/cart.service";
 import { CommonModule } from "@angular/common";
 import { CartItemComponent } from "../cart-item/cart-item.component";
 import { CartItemModel } from "../../models/cart-item.model";
 import { FilterCartItemsByCategoryPipe } from "../../pipes/filter-cart-items-by-category.pipe";
-import { Observable, mergeMap} from "rxjs";
+import { Observable, mergeMap, take, tap } from "rxjs";
 import { OrderByPipe } from "src/app/shared/pipes/order-by.pipe";
 import { DeepKeyOf } from "src/app/shared/deepkeyof.type";
 import { Router } from "@angular/router";
 import { ProductsService } from "src/app/products/services/products.service";
+import { AppSettingsService } from "src/app/core/services/app-settings.service";
 import { SortOption } from "src/app/core/enums/sort-option.enum";
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from "@angular/forms";
 
 @Component({
@@ -29,7 +31,14 @@ export class CartListComponent implements OnInit {
     readonly orderByProps: Array<DeepKeyOf<CartItemModel>> = ["cost", "quantity", "product.name"];
     currentSortOrder: SortOption = SortOption.ASC;
 
-    constructor(private readonly router: Router) {
+    constructor(private readonly router: Router,
+        private readonly appSettingsService: AppSettingsService,
+        private readonly destroyRef: DestroyRef) {
+        this.appSettingsService.appSettings$.pipe(
+            take(1),
+            tap(settings => this.currentSortOrder = settings.sortOrder),
+            takeUntilDestroyed(this.destroyRef)
+        ).subscribe();
     }
 
     ngOnInit(): void {
@@ -54,6 +63,7 @@ export class CartListComponent implements OnInit {
 
     onSortOptionChange(value: SortOption): void {
         this.currentSortOrder = value;
+        this.appSettingsService.persistSortOrder(value);
     }
 
     clearCart(): void {
