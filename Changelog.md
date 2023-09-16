@@ -10,6 +10,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## v1.0.6 - 2023-09-16
+
+### Added
+
+- concurrently & json-server [`585295b`](https://github.com/try-once-more/shop/commit/585295b7739207ef75c8ec05b7c6ade665099421)
+- HttpClient, CartObservableService, ProductsPromiseService [`9b323e8`](https://github.com/try-once-more/shop/commit/9b323e8ea31d1e99c7b13f6757b003334fc9c184)
+- AppSettingsService [`f95ccca`](https://github.com/try-once-more/shop/commit/f95cccad698bcd99535e99dd26e5730f234a5842)
+- TimingInterceptor [`b4e55d0`](https://github.com/try-once-more/shop/commit/b4e55d0b1a81372659b65e6b4dcff9f2d2d2bbe3)
+
+### Fixed
+
+- styles [`2405f61`](https://github.com/try-once-more/shop/commit/2405f6131a63ca1dd45d0bb90b2345cc32a883ab)
+- ProductViewComponent [`374d691`](https://github.com/try-once-more/shop/commit/374d69185eab16941a3a63d512a8db0ef9ad4c5b)
+
+### Changed
+
+- cart items and product list now stored in a database [`3253cb7`](https://github.com/try-once-more/shop/commit/3253cb7d6eab97ee60e54d24dfe1e3c03e33cf83)
+- sortOption type [`4c47e03`](https://github.com/try-once-more/shop/commit/4c47e03a97587f06747e6ab0c9a513c80c1f01c3)
+- LocalStorageService became generic [`2f94809`](https://github.com/try-once-more/shop/commit/2f94809bdcaff2683873418667a9fa1c87b59364)
+
 ## v1.0.5 - 2023-09-14
 
 ### Added

@@ -1,6 +1,6 @@
 {
     "name": "shop",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "scripts": {
         "ng": "ng",
         "start": "concurrently --kill-others \"ng serve -o\" \"json-server --watch db\\db.json\"",
