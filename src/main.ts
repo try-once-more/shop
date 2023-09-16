@@ -8,7 +8,8 @@ import { LocalStorageService } from "./app/core/services/local-storage.service";
 import { DEFAULT_CURRENCY_CODE, LOCALE_ID } from "@angular/core";
 import { provideRouter, withComponentInputBinding } from "@angular/router";
 import { APP_ROUTES } from "./app/app-routing";
-import { provideHttpClient } from "@angular/common/http";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { httpInterceptorProviders } from "./app/core/interceptors";
 
 const constants = {
     App: "Shop",
@@ -18,12 +19,13 @@ const constants = {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptorsFromDi()),
         provideRouter(APP_ROUTES, withComponentInputBinding()),
         { provide: ConstantsServiceToken, useValue: constants },
         { provide: GeneratedStringToken, useFactory: GeneratorFactory, deps: [GeneratorService] },
         { provide: LocalStorageService, useValue: new LocalStorageService() },
         { provide: DEFAULT_CURRENCY_CODE, useValue: "USD" },
-        { provide: LOCALE_ID, useValue: "en-US" }
+        { provide: LOCALE_ID, useValue: "en-US" },
+        httpInterceptorProviders
     ]
 }).catch((error: Error) => console.error(error));
