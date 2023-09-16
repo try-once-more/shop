@@ -1,15 +1,17 @@
 import { Pipe, PipeTransform } from "@angular/core";
 import { DeepKeyOf } from "../deepkeyof.type";
+import { SortOption } from "src/app/core/enums/sort-option.enum";
 
 @Pipe({
     name: "orderBy",
     standalone: true
 })
 export class OrderByPipe implements PipeTransform {
-    transform<T>(value: readonly T[] | null, properties: Array<DeepKeyOf<T>>, orderByAsc: boolean = false): readonly T[] | null {
+    transform<T>(value: readonly T[] | null, properties: Array<DeepKeyOf<T>>, sortOption: SortOption = SortOption.DESC): readonly T[] | null {
         if (!value) {
             return value;
         }
+        const orderByAsc = sortOption === SortOption.ASC;
 
         const compareFn = (a: T, b: T): -1 | 0 | 1 => {
             for (let key of properties) {

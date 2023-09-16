@@ -3,12 +3,10 @@
         <div class="navbar-collapse">
             <span class="navbar-text">Order by:</span>
             <select class="nav-item form-control-sm"
-                #orderBy
-                (change)="onSortOptionChange(orderBy.value)">
-                <option *ngFor="let so of sortOptions"
-                    [value]="so.value"
-                    [selected]="so.value === orderByAsc">
-                    {{ so.name }}
+                [ngModel]="currentSortOrder"
+                (ngModelChange)="onSortOptionChange($event)">
+                <option *ngFor="let so of sortOptions" [value]="so">
+                    {{ so }}
                 </option>
             </select>
             <label class="col-auto col-form-label mx-auto h1">Total:
@@ -35,7 +33,7 @@
 
 <app-cart-item
     *ngFor="let cartItem of 
-        (cartItems$ | async | orderBy: orderByProps: orderByAsc);
+        (cartItems$ | async | orderBy: orderByProps: currentSortOrder);
         trackBy : trackProductByName"
     [product]="cartItem.product"
     [quantity]="cartItem.quantity"
