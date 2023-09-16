@@ -1,15 +1,15 @@
-import { Component, inject } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { CartService } from "../../services/cart.service";
-import { ProductModel } from "src/app/products/models/product.model";
 import { CommonModule } from "@angular/common";
 import { CartItemComponent } from "../cart-item/cart-item.component";
 import { CartItemModel } from "../../models/cart-item.model";
 import { FilterCartItemsByCategoryPipe } from "../../pipes/filter-cart-items-by-category.pipe";
-import { map } from "rxjs";
+import { Observable, mergeMap } from "rxjs";
 import { OrderByPipe } from "src/app/shared/pipes/order-by.pipe";
 import { DeepKeyOf } from "src/app/shared/deepkeyof.type";
 import { Router } from "@angular/router";
 import { ProductsService } from "src/app/products/services/products.service";
+
 
 @Component({
     selector: "app-cart-list",
@@ -17,13 +17,11 @@ import { ProductsService } from "src/app/products/services/products.service";
     templateUrl: "./cart-list.component.html",
     imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe, OrderByPipe]
 })
-export class CartListComponent {
+export class CartListComponent implements OnInit {
     private readonly productsService = inject(ProductsService);
     readonly cartService = inject(CartService);
 
-    cartItems$ = this.cartService.getProducts();
-    categories$ = this.cartItems$.pipe(
-        map(cartItems => new Set(cartItems.map(item => item.product.category))));
+    cartItems$: Observable<readonly CartItemModel[]> | undefined;
 
     quantityMapping: { [key: string]: string } = { "=1": "# pc.", other: "# pcs." };
     sortOptions = [
@@ -36,22 +34,23 @@ export class CartListComponent {
     constructor(private readonly router: Router) {
     }
 
+    ngOnInit(): void {
+        this.cartItems$ = this.cartService.getProducts();
+    }
+
     trackProductByName(_: number, item: CartItemModel): string {
         return item.product.name;
     }
 
-    onRemoveItem(product: ProductModel): void {
-        this.cartService.removeProduct(product);
-        if (this.cartService.isEmptyCart()) {
-            this.router.navigateByUrl("/products-list");
-        }
+    onRemoveItem(item: CartItemModel): void {
+        this.cartItems$ = this.cartService.removeCartItem(item);
     }
 
     onQuantityChange(cartItem: CartItemModel, newQuantity: number): void {
         if (newQuantity > cartItem.quantity) {
-            this.cartService.increaseQuantity(cartItem.product, newQuantity - cartItem.quantity);
+            this.cartItems$ = this.cartService.increaseQuantity(cartItem, newQuantity - cartItem.quantity);
         } else if (newQuantity < cartItem.quantity) {
-            this.cartService.decreaseQuantity(cartItem.product, cartItem.quantity - newQuantity);
+            this.cartItems$ = this.cartService.decreaseQuantity(cartItem, cartItem.quantity - newQuantity);
         }
     }
 
@@ -60,7 +59,7 @@ export class CartListComponent {
     }
 
     clearCart(): void {
-        this.cartService.removeAllProducts();
+        this.cartItems$ = this.cartService.removeAllProducts();
     }
 
     goToOrder(): void {
@@ -68,6 +67,8 @@ export class CartListComponent {
     }
 
     buyRandom(): void {
-        this.cartService.addProduct(this.productsService.getRandomProduct());
+        this.cartItems$ = this.productsService.getRandomProduct().pipe(
+            mergeMap(item => this.cartService.addProduct(item))
+        );
     }
 }

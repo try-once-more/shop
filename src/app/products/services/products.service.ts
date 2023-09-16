@@ -1,41 +1,30 @@
-import { Inject, Injectable, Optional } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { ProductModel } from "../models/product.model";
 import { Category } from "../enums/category.enum";
 import { GeneratorService } from "src/app/shared/services/generator.service";
 import { MathHelper } from "src/app/shared/math.helper";
 import { GeneratedStringToken } from "src/app/core/services/generated-string.token";
-import { LocalStorageService } from "src/app/core/services/local-storage.service";
-import { BehaviorSubject, Observable} from "rxjs";
+import { Observable, from, map } from "rxjs";
+import { ProductsPromiseService } from "./products-promise.service";
 
 @Injectable({
     providedIn: "root"
 })
 export class ProductsService {
-    private readonly ALL_PRODUCTS_KEY = "ALL_PRODUCTS";
-    private products$: BehaviorSubject<ProductModel[]>;
 
     constructor(private readonly generatorService: GeneratorService,
         @Inject(GeneratedStringToken) private generatedString: (n: number) => string,
-        @Optional() private localStorageService: LocalStorageService) {
-        
-        
-        const data = this.localStorageService?.getItem(this.ALL_PRODUCTS_KEY);
-        if (data) {
-            this.products$ = new BehaviorSubject(JSON.parse(data));
-        } else {
-            const products = this.generatorService.generateArray(100, (i) => this.generateRandomProduct(i));
-            localStorageService?.setItem(this.ALL_PRODUCTS_KEY, JSON.stringify(products));
-            this.products$ = new BehaviorSubject(products);
-        }
+        private readonly productsPromiseService: ProductsPromiseService) {
     }
 
     getProducts(): Observable<ProductModel[]> {
-        return this.products$.asObservable();
+        return from(this.productsPromiseService.getProducts());
     }
 
-    getRandomProduct(): ProductModel {
-        const products = this.products$.getValue();
-        return products[this.generatorService.random(products.length)];
+    getRandomProduct(): Observable<ProductModel> {
+        return from(this.productsPromiseService.getProducts()).pipe(
+            map(items => items[this.generatorService.random(items.length)])
+        );
     }
 
     private generateRandomProduct(_: number): ProductModel {

@@ -1,16 +1,14 @@
 import { inject } from '@angular/core';
 import { Location } from '@angular/common';
-import { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { CartService } from "src/app/cart/services/cart.service";
-import { firstValueFrom } from 'rxjs';
 
 export const isCartEmptyGuard: CanActivateFn = 
     async (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-        const products = await firstValueFrom(inject(CartService).getProducts());
-        if (products.length > 0) {
-            return true;
+        const isEmptyCart = inject(CartService).isEmptyCart();
+        if (isEmptyCart) {
+            inject(Location).back();
         }
 
-        inject(Location).back();
-        return false;
+        return !isEmptyCart;
 };
