@@ -8,7 +8,7 @@ import { HttpClient } from "@angular/common/http";
     providedIn: "root"
 })
 export class ProductsPromiseService {
-    private readonly retries = 2;
+    private readonly attempts = 2;
     private readonly url: string;
 
     constructor(@Inject(API_URL) private readonly apiUrl: string,
@@ -18,7 +18,7 @@ export class ProductsPromiseService {
 
     getProducts(): Promise<ProductModel[]> {
         const request$ = this.httpClient.get<ProductModel[]>(this.url).pipe(
-            retry(this.retries)
+            retry(this.attempts)
         );
         return firstValueFrom(request$);
     }
@@ -26,14 +26,14 @@ export class ProductsPromiseService {
     getProduct(id: NonNullable<ProductModel["id"]>): Promise<ProductModel> {
         const url = `${this.url}/${id}`;
         const request$ = this.httpClient.get<ProductModel>(url).pipe(
-            retry(this.retries)
+            retry(this.attempts)
         );
         return firstValueFrom(request$);
     }
 
     createProduct(item: ProductModel): Promise<ProductModel> {
         const request$ = this.httpClient.post<ProductModel>(this.url, item).pipe(
-            retry(this.retries)
+            retry(this.attempts)
         );
         return firstValueFrom(request$);
     }
@@ -41,7 +41,7 @@ export class ProductsPromiseService {
     updateProduct(item: ProductModel): Promise<ProductModel> {
         const url = `${this.url}/${item.id}`;
         const request$ = this.httpClient.put<ProductModel>(url, item).pipe(
-            retry(this.retries)
+            retry(this.attempts)
         );
         return firstValueFrom(request$);
     }
@@ -49,7 +49,7 @@ export class ProductsPromiseService {
     deleteProduct(item: ProductModel): Promise<unknown> {
         const url = `${this.url}/${item.id}`;
         const request$ = this.httpClient.delete(url).pipe(
-            retry(this.retries)
+            retry(this.attempts)
         );
         return firstValueFrom(request$);
     }
