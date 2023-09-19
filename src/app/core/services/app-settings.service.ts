@@ -34,18 +34,23 @@ export class AppSettingsService {
                     throw new Error();
                 }
                 
-                this.localStorageService?.setItem<AppSettingsModel>(this.APP_SETTINGS_KEY, { sortOrder: settings.sortOrder });
+                this.updateSettings("sortOrder", settings.sortOrder);
             }),
-            catchError(() => of({ sortOrder: SortOption.DESC })),
+            catchError(() => of(this.getDefault())),
         );
     }
 
-    persistSortOrder(sortOrder: SortOption): void {
-        const appSettings: AppSettingsModel = {
-            ... this.localStorageService?.getItem<AppSettingsModel>(this.APP_SETTINGS_KEY),
-            sortOrder: sortOrder
-        } 
+    updateSettings<K extends keyof AppSettingsModel>(key: K, value: AppSettingsModel[K]): void {
+        const appSettings: AppSettingsModel = this.localStorageService?.getItem<AppSettingsModel>(this.APP_SETTINGS_KEY) 
+            ?? this.getDefault();
         
+        appSettings[key] = value;
         this.localStorageService?.setItem<AppSettingsModel>(this.APP_SETTINGS_KEY, appSettings);
+    }
+
+    private getDefault(): AppSettingsModel {
+        return { 
+            sortOrder: SortOption.DESC 
+        };
     }
 }

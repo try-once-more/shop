@@ -63,7 +63,7 @@ export class CartListComponent implements OnInit {
 
     onSortOptionChange(value: SortOption): void {
         this.currentSortOrder = value;
-        this.appSettingsService.persistSortOrder(value);
+        this.appSettingsService.updateSettings("sortOrder", value);
     }
 
     clearCart(): void {
