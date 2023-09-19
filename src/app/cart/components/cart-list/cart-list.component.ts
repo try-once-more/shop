@@ -1,4 +1,4 @@
-import { Component, DestroyRef, OnInit, inject } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { CartService } from "../../services/cart.service";
 import { CommonModule } from "@angular/common";
 import { CartItemComponent } from "../cart-item/cart-item.component";
@@ -7,18 +7,17 @@ import { FilterCartItemsByCategoryPipe } from "../../pipes/filter-cart-items-by-
 import { Observable, mergeMap, take, tap } from "rxjs";
 import { OrderByPipe } from "src/app/shared/pipes/order-by.pipe";
 import { DeepKeyOf } from "src/app/shared/deepkeyof.type";
-import { Router } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { ProductsService } from "src/app/products/services/products.service";
 import { AppSettingsService } from "src/app/core/services/app-settings.service";
 import { SortOption } from "src/app/core/enums/sort-option.enum";
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from "@angular/forms";
 
 @Component({
     selector: "app-cart-list",
     standalone: true,
     templateUrl: "./cart-list.component.html",
-    imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe, OrderByPipe, FormsModule]
+    imports: [CommonModule, CartItemComponent, FilterCartItemsByCategoryPipe, OrderByPipe, FormsModule, RouterLink]
 })
 export class CartListComponent implements OnInit {
     private readonly productsService = inject(ProductsService);
@@ -26,18 +25,14 @@ export class CartListComponent implements OnInit {
 
     cartItems$: Observable<readonly CartItemModel[]> | undefined;
 
-    readonly quantityMapping: { [key: string]: string } = { "=1": "# pc.", other: "# pcs." };
     readonly sortOptions = [SortOption.ASC, SortOption.DESC];
     readonly orderByProps: Array<DeepKeyOf<CartItemModel>> = ["cost", "quantity", "product.name"];
     currentSortOrder: SortOption = SortOption.ASC;
 
-    constructor(private readonly router: Router,
-        private readonly appSettingsService: AppSettingsService,
-        private readonly destroyRef: DestroyRef) {
+    constructor(private readonly appSettingsService: AppSettingsService) {
         this.appSettingsService.appSettings$.pipe(
             take(1),
-            tap(settings => this.currentSortOrder = settings.sortOrder),
-            takeUntilDestroyed(this.destroyRef)
+            tap(settings => this.currentSortOrder = settings.sortOrder)
         ).subscribe();
     }
 
@@ -45,8 +40,8 @@ export class CartListComponent implements OnInit {
         this.cartItems$ = this.cartService.getProducts();
     }
 
-    trackProductByName(_: number, item: CartItemModel): string {
-        return item.product.name;
+    trackByFn(_: number, item: CartItemModel): number {
+        return item.id;
     }
 
     onRemoveItem(item: CartItemModel): void {
@@ -68,10 +63,6 @@ export class CartListComponent implements OnInit {
 
     clearCart(): void {
         this.cartItems$ = this.cartService.removeAllProducts();
-    }
-
-    goToOrder(): void {
-        this.router.navigateByUrl("cart/order");
     }
 
     buyRandom(): void {

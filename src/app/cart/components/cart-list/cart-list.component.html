@@ -1,6 +1,5 @@
 <nav class="navbar navbar-expand navbar-light bg-light">
-    <div class="container-fluid">
-        <div class="navbar-collapse">
+    <div class="container-fluid navbar-collapse">
             <span class="navbar-text">Order by:</span>
             <select class="nav-item form-control-sm"
                 [ngModel]="currentSortOrder"
@@ -11,12 +10,12 @@
             </select>
             <label class="col-auto col-form-label mx-auto h1">Total:
                 {{ this.cartService.totalCost() | currency }} -
-                {{ this.cartService.totalQuantity() | i18nPlural: quantityMapping}}
+            {{ this.cartService.totalQuantity() | i18nPlural: {"=1":"# pc.", other:"# pcs."} }}
             </label>
 
             <ul class="navbar-nav">
                 <li class="nav-item mx-2">
-                    <button class="btn btn-sm btn-outline-primary" (click)="goToOrder()">
+                <button class="btn btn-sm btn-outline-primary" routerLink="/cart/order">
                         Order
                     </button>
                 </li>
@@ -28,13 +27,11 @@
                 </li>
             </ul>
         </div>
-    </div>
 </nav>
 
 <app-cart-item
-    *ngFor="let cartItem of 
-        (cartItems$ | async | orderBy: orderByProps: currentSortOrder);
-        trackBy : trackProductByName"
+    *ngFor="let cartItem of (cartItems$ | async | orderBy: orderByProps: currentSortOrder);
+        trackBy : trackByFn"
     [product]="cartItem.product"
     [quantity]="cartItem.quantity"
     (remove)="onRemoveItem(cartItem)"
