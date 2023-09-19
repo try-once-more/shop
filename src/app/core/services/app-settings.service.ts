@@ -1,13 +1,13 @@
-import { Injectable, Optional } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, retry, shareReplay, take, tap } from 'rxjs/operators';
-import { AppSettingsModel } from '../models/app-settings.model';
-import { LocalStorageService } from './local-storage.service';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, Optional } from "@angular/core";
+import { Observable, of } from "rxjs";
+import { catchError, retry, shareReplay, take, tap } from "rxjs/operators";
+import { AppSettingsModel } from "../models/app-settings.model";
+import { LocalStorageService } from "./local-storage.service";
+import { HttpClient } from "@angular/common/http";
 import { SortOption } from "../enums/sort-option.enum";
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: "root",
 })
 export class AppSettingsService {
     private readonly APP_SETTINGS_KEY = "APP_SETTINGS_KEY";
