@@ -9,7 +9,7 @@ import { ProductModel } from "src/app/products/models/product.model";
     providedIn: "root",
 })
 export class CartObservableService {
-    private readonly retries = 2;
+    private readonly attempts = 2;
     private readonly url: string;
 
     constructor(@Inject(API_URL) private readonly apiUrl: string,
@@ -19,21 +19,21 @@ export class CartObservableService {
 
     getCartItems(): Observable<CartItemModel[]> {
         return this.httpClient.get<CartItemModel[]>(this.url).pipe(
-            retry(this.retries)
+            retry(this.attempts)
         );
     }
 
     updateCartItem(item: CartItemModel): Observable<CartItemModel> {
         const url = `${this.url}/${item.product.id}`;
         return this.httpClient.put<CartItemModel>(url, item).pipe(
-            retry(this.retries)
+            retry(this.attempts)
         );
     }
 
 
     createCartItem(item: CartItemModel): Observable<CartItemModel> {
         return this.httpClient.post<CartItemModel>(this.url, item).pipe(
-            retry(this.retries)
+            retry(this.attempts)
         );
     }
 
@@ -41,7 +41,7 @@ export class CartObservableService {
     deleteCartItem(id: NonNullable<ProductModel["id"]>): Observable<unknown> {
         const url = `${this.url}/${id}`;
         return this.httpClient.delete(url).pipe(
-            retry(this.retries)
+            retry(this.attempts)
         );
     }
 }

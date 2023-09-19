@@ -1,32 +1,32 @@
 <nav class="navbar navbar-expand navbar-light bg-light">
     <div class="container-fluid navbar-collapse">
-            <span class="navbar-text">Order by:</span>
-            <select class="nav-item form-control-sm"
-                [ngModel]="currentSortOrder"
-                (ngModelChange)="onSortOptionChange($event)">
-                <option *ngFor="let so of sortOptions" [value]="so">
-                    {{ so }}
-                </option>
-            </select>
-            <label class="col-auto col-form-label mx-auto h1">Total:
-                {{ this.cartService.totalCost() | currency }} -
+        <span class="navbar-text">Order by:</span>
+        <select class="nav-item form-control-sm"
+            [ngModel]="currentSortOrder"
+            (ngModelChange)="onSortOptionChange($event)">
+            <option *ngFor="let so of sortOptions" [value]="so">
+                {{ so }}
+            </option>
+        </select>
+        <label class="col-auto col-form-label mx-auto h1">Total:
+            {{ this.cartService.totalCost() | currency }} -
             {{ this.cartService.totalQuantity() | i18nPlural: {"=1":"# pc.", other:"# pcs."} }}
-            </label>
+        </label>
 
-            <ul class="navbar-nav">
-                <li class="nav-item mx-2">
+        <ul class="navbar-nav">
+            <li class="nav-item mx-2">
                 <button class="btn btn-sm btn-outline-primary" routerLink="/cart/order">
-                        Order
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button [disabled]="this.cartService.isEmptyCart()"
-                        class="btn btn-sm btn-outline-danger" (click)="clearCart()">
-                        Clear Cart
-                    </button>
-                </li>
-            </ul>
-        </div>
+                    Order
+                </button>
+            </li>
+            <li class="nav-item">
+                <button [disabled]="this.cartService.isEmptyCart()"
+                    class="btn btn-sm btn-outline-danger" (click)="clearCart()">
+                    Clear Cart
+                </button>
+            </li>
+        </ul>
+    </div>
 </nav>
 
 <app-cart-item
