@@ -9,7 +9,7 @@ export const productTitleResolver: ResolveFn<string> =
         const router = inject(Router);
 
         const productID = +(route.paramMap.get("productID") ?? NaN);
-        if (!isNaN(productID)) {
+        if (!Number.isNaN(productID)) {
             return productsService.getProducts().pipe(
                 switchMap(products => {
                     const productName = products?.find(x => x.id === productID)?.name;

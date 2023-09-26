@@ -10,7 +10,18 @@ export const productResolver: ResolveFn<ProductModel> =
         const router = inject(Router);
 
         const productID = +(route.paramMap.get("productID") ?? NaN);
-        if (!isNaN(productID)) {
+		// Глобальная функция isNaN преобразует тестируемое значение в число,
+		// а затем проверяет, является ли оно NaN.
+		// Это может привести к неправильным результатам для некоторых значений,
+		// которые не являются числами, но могут быть преобразованы в них.
+		// Например, isNaN("1") вернет false, потому что строка "1"
+		// может быть преобразована в число 1
+		// Number.isNaN не преобразует тестируемое значение в число и
+		// возвращает true только для значений типа Number,
+		// которые равны NaN.
+		// Это более надежный способ проверки на NaN,
+		// так как он не зависит от принудительного преобразования типов.
+        if (!Number.isNaN(productID)) {
             return productsService.getProducts().pipe(
                 switchMap(products => {
                     const product = products?.find(x => x.id === productID);
@@ -22,7 +33,7 @@ export const productResolver: ResolveFn<ProductModel> =
                 })
             );
         }
-        
+
         router.navigate([""]);
         return EMPTY;
     };
