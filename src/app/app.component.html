@@ -1,7 +1,38 @@
-<h1 #appTitle></h1>
-<div class="header">
-    <app-cart-list></app-cart-list>
-</div>
-<div class="content">
-    <app-product-list></app-product-list>
-</div>
+<nav class="navbar navbar-expand sticky-top navbar-light bg-light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <span class="navbar-brand h1" #appTitle>Title</span>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/products-list" active>Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/admin">Admin</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item me-2">
+                    <button class="nav-link" routerLink="/cart">
+                        <app-cart-icon/>
+                    </button>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                        {{authService.currentRole()?.name ?? 'Log in'}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <ng-container *ngIf="authService.currentRole(); else needLogIn">
+                            <button class="dropdown-item" (click)="logOut()">Log out</button>
+                        </ng-container>
+                        <ng-template #needLogIn>
+                            <li *ngFor="let role of authService.roles">
+                                <button class="dropdown-item" (click)="logIn(role)">{{role.name}}</button>
+                            </li>
+                        </ng-template>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<router-outlet></router-outlet>

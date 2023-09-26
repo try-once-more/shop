@@ -1,6 +1,11 @@
-<div class="product-list-container">
-    <div class="product-list">
-        <app-product *ngFor="let product of productList" [product]="product"
-            (addToCart)="onAddToCart($event)"></app-product>
+<div *ngIf="loading" class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
     </div>
 </div>
+<<<<<<< HEAD
+=======
+<app-product *ngFor="let product of products$ | async"
+    [product]="product"
+    (addToCart)="onAddToCart($event)">
+</app-product>
+>>>>>>> 07983bf96f150a6fc09fbeb6cb8884e25e985c23
