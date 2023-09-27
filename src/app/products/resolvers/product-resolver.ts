@@ -9,8 +9,8 @@ export const productResolver: ResolveFn<ProductModel> =
         const productsService = inject(ProductsService);
         const router = inject(Router);
 
-        const productID = +(route.paramMap.get("productID") ?? NaN);
-        if (!isNaN(productID)) {
+        const productID = Number(route.paramMap.get("productID")?.trim() || NaN);
+        if (Number.isInteger(productID)) {
             return productsService.getProducts().pipe(
                 switchMap(products => {
                     const product = products?.find(x => x.id === productID);

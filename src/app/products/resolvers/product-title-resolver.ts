@@ -8,8 +8,8 @@ export const productTitleResolver: ResolveFn<string> =
         const productsService = inject(ProductsService);
         const router = inject(Router);
 
-        const productID = +(route.paramMap.get("productID") ?? NaN);
-        if (!isNaN(productID)) {
+        const productID = Number(route.paramMap.get("productID")?.trim() || NaN);
+        if (Number.isInteger(productID)) {
             return productsService.getProducts().pipe(
                 switchMap(products => {
                     const productName = products?.find(x => x.id === productID)?.name;
