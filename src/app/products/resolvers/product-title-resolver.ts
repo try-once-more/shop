@@ -8,7 +8,7 @@ export const productTitleResolver: ResolveFn<string> =
         const productsService = inject(ProductsService);
         const router = inject(Router);
 
-        const productID = Number(route.paramMap.get("productID")?.trim() || NaN);
+        const productID = Number(route.paramMap.get("productID") || NaN);
         if (Number.isInteger(productID)) {
             return productsService.getProducts().pipe(
                 switchMap(products => {
