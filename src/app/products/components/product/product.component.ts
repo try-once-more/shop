@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { ProductModel } from "../../models/product.model";
 import { CommonModule } from "@angular/common";
 import { ChangeStyleDirective } from "src/app/shared/directives/change-style.directive";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
     selector: "app-product",
@@ -13,6 +13,7 @@ import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 export class ProductComponent  {
     @Input({ required: true }) product!: ProductModel;
     @Output() addToCart = new EventEmitter<ProductModel>();
+    @Output() delete = new EventEmitter<ProductModel>();
 
     readonly canEdit: boolean;
 
@@ -23,4 +24,8 @@ export class ProductComponent  {
     onAddToCart(): void {
         this.addToCart.emit(this.product);
     }
+
+    onDelete(): void {
+        this.delete.emit(this.product);
+    } 
 }

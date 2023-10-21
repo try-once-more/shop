@@ -29,5 +29,6 @@ export class ProductListComponent implements OnInit {
         this.cartService.addProduct(product).pipe(
             take(1)
         ).subscribe();
+    onDelete(product: ProductModel) {
     }
 }

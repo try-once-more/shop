@@ -4,5 +4,6 @@
 </div>
 <app-product *ngFor="let product of products$ | async"
     [product]="product"
-    (addToCart)="onAddToCart($event)">
+    (addToCart)="onAddToCart($event)"
+    (delete)="onDelete($event)">
 </app-product>

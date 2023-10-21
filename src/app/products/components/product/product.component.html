@@ -22,6 +22,10 @@
                 [routerLink]="['/product', product.id]">
                 <i class="bi bi-eye"></i>
             </button>
+            <button *ngIf="canEdit" class="btn-sm btn btn-outline-danger mx-1"
+                (click)="onDelete()">
+                <i class="bi bi-trash"></i>
+            </button>
         </div>
     </div>    
 </div>
