@@ -10,8 +10,13 @@ import { provideRouter, withComponentInputBinding } from "@angular/router";
 import { APP_ROUTES } from "./app/app-routing";
 import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 import { httpInterceptorProviders } from "./app/core/interceptors";
+import { provideState, provideStore } from "@ngrx/store";
+import { provideEffects } from "@ngrx/effects";
+import { productsFeatureKey } from "./app/@ngrx/app.state";
+import { productsReducer } from "./app/@ngrx/products/products.reducer";
+import { ProductsEffects } from "./app/@ngrx/products/products.effects";
 
-const constants = {
+const constants = { 
     App: "Shop",
     Version: require("../package.json").version,
     API_URL: "http://localhost:4200",
@@ -21,6 +26,9 @@ bootstrapApplication(AppComponent, {
     providers: [
         provideHttpClient(withInterceptorsFromDi()),
         provideRouter(APP_ROUTES, withComponentInputBinding()),
+        provideStore(),
+        provideState(productsFeatureKey, productsReducer),
+        provideEffects(ProductsEffects),
         { provide: ConstantsServiceToken, useValue: constants },
         { provide: GeneratedStringToken, useFactory: GeneratorFactory, deps: [GeneratorService] },
         { provide: LocalStorageService, useValue: new LocalStorageService() },

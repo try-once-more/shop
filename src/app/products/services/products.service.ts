@@ -27,6 +27,18 @@ export class ProductsService {
         );
     }
 
+    updateProduct(model: ProductModel): Observable<ProductModel> {
+        return from(this.productsPromiseService.updateProduct(model));
+    }
+
+    createProduct(model: ProductModel): Observable<ProductModel> {
+        return from(this.productsPromiseService.createProduct(model));
+    }
+
+    deleteProduct(model: ProductModel): Observable<unknown> {
+        return from(this.productsPromiseService.deleteProduct(model));
+    }
+
     private generateRandomProduct(_: number): ProductModel {
         const categoryValues = Object.values(Category);
         const id = this.generatorService.getNewID()!;
