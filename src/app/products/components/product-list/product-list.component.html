@@ -1,8 +1,9 @@
-<div *ngIf="loading" class="d-flex justify-content-center">
+<div *ngIf="(loading$ | async)" class="d-flex justify-content-center">
     <div class="spinner-border" role="status">
     </div>
 </div>
-<app-product *ngFor="let product of products$ | async"
+<p *ngIf="(error$ | async) as value">{{value}}</p>
+<app-product *ngFor='let product of (products$ | async)'
     [product]="product"
     (addToCart)="onAddToCart($event)"
     (delete)="onDelete($event)">
