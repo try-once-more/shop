@@ -1,27 +1,14 @@
 import { inject } from "@angular/core";
-import { ActivatedRouteSnapshot, ResolveFn, Router, RouterStateSnapshot } from "@angular/router";
-import { EMPTY, of, switchMap } from "rxjs";
-import { ProductsService } from "../services/products.service";
+import { ResolveFn } from "@angular/router";
+import { map, take } from "rxjs";
+import { Store } from "@ngrx/store";
+import { selectSelectedProductByUrl } from "src/app/@ngrx/products/products.selectors";
 
 export const productTitleResolver: ResolveFn<string> =
-    (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
-        const productsService = inject(ProductsService);
-        const router = inject(Router);
-
-        const productID = Number(route.paramMap.get("productID") || NaN);
-        if (Number.isInteger(productID)) {
-            return productsService.getProducts().pipe(
-                switchMap(products => {
-                    const productName = products?.find(x => x.id === productID)?.name;
-                    if (productName) {
-                        return of(productName);
-                    } else {
-                        return EMPTY;
-                    }
-                })
-            );
-        }
-
-        router.navigate([""]);
-        return EMPTY;
+    (route, state) => {
+        const store = inject(Store);
+        return store.select(selectSelectedProductByUrl).pipe(
+            map(product => product?.name ?? ""),
+            take(1)
+        );
     };

@@ -8,6 +8,7 @@ import { CanComponentDeactivate } from "src/app/core/interfaces/can-component-de
 import { Observable, of } from "rxjs";
 import * as ProductsActions from "../../../@ngrx/products/products.actions";
 import { Store } from "@ngrx/store";
+import * as RouterActions from "../../../@ngrx/router/router.actions";
 
 @Component({
     selector: "app-product-view",
@@ -32,7 +33,6 @@ export class ProductViewComponent implements OnInit, CanComponentDeactivate {
 
     
     constructor(private readonly router: Router,
-        private readonly location: Location,
         private readonly store: Store) {
 
         this.viewOnly = !this.router.routerState.snapshot.url.includes("/admin/");
@@ -54,13 +54,11 @@ export class ProductViewComponent implements OnInit, CanComponentDeactivate {
 
             this.goBackClicked = true;
         }
-
-        this.location.back();
     }
 
     goBack() {
         this.goBackClicked = true;
-        this.location.back();
+        this.store.dispatch(RouterActions.back());
     }
 
     canDeactivate(): boolean | Observable<boolean> {
