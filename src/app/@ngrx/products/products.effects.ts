@@ -4,6 +4,7 @@ import { type Action } from "@ngrx/store";
 import { type Observable, concatMap, map, switchMap, catchError, of } from "rxjs";
 import { ProductsService } from "src/app/products/services/products.service";
 import * as ProductsActions from "./products.actions";
+import * as RouterActions from "../router/router.actions";
 import { ProductModel } from "src/app/products/models/product.model";
 
 @Injectable()
@@ -48,6 +49,13 @@ export class ProductsEffects {
                         catchError(error => of(ProductsActions.createUpdateProductError({ error })))
                     )
             )
+        )
+    );
+
+    createUpdateProductSuccess$: Observable<Action> = createEffect(() =>
+        this.actions$.pipe(
+            ofType(ProductsActions.createProductSuccess, ProductsActions.updateProductSuccess),
+            map(action => RouterActions.back())
         )
     );
 
