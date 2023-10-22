@@ -8,10 +8,10 @@ export const productsReducer = createReducer(
         return { ...state, loading: true };
     }),
     on(ProductsActions.getProductsSuccess, (state, { products }) => {
-        return adapter.setAll(products, { ...state, loading: false });
+        return adapter.setAll(products, { ...state, loading: false, loaded: true });
     }),
     on(ProductsActions.getProductsError, (state, { error }) => {
-        return { ...state, loading: false, error };
+        return { ...state, loading: false, loaded: false, error };
     }),
     on(ProductsActions.createProductSuccess, (state, { product }) => {
         return adapter.addOne(product, state);
