@@ -10,6 +10,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## v1.0.7 - 2023-10-22
+
+### Added
+
+- app state, product state, selectors, actions, effects, reducer [`71f6c49`](https://github.com/try-once-more/shop/commit/71f6c49f1f3d719820c62e336ed566423dcd93d8)
+- router-store, router state, actions, serializer, selectors, effects, reducer [`e4824c9`](https://github.com/try-once-more/shop/commit/e4824c9bbb74d03dde5c5ae915cd42ad3af56487)
+- spinner [`ef9105a`](https://github.com/try-once-more/shop/commit/ef9105a79041dfe9ddd47d2b11f4ae16195a9a70)
+- productsStatePreloadingGuard, productsExistsGuard [`103c2fe`](https://github.com/try-once-more/shop/commit/103c2fe76c640e84490ba326fd9c4a1eeb908a9f)
+- additional selectors to product selectors [`8365938`](https://github.com/try-once-more/shop/commit/83659381d43281fd17d1011f7bd990270b25fdba)
+- delete product button [`4e39a93`](https://github.com/try-once-more/shop/commit/4e39a93fd63a77977a99231cf2f8e81e47c8647f)
+- loaded state to ProductsState [`27c75aa`](https://github.com/try-once-more/shop/commit/27c75aa3054a6350ead05b47a4e3f489bb0cac69)
+
+### Fixed
+
+- getting productID in resolvers [`cdd2cea`](https://github.com/try-once-more/shop/commit/cdd2cea7b69dc275790501dcad7455ac3c9bd4f3)
+
+### Changed
+
+- productResolver, productTitleResolver. Enabled RouterStore, productsStatePreloadingGuard, productsExistsGuard [`4a2804f`](https://github.com/try-once-more/shop/commit/4a2804f4149cd20286441bca302c3b105a495c3c)
+- data usage from the store [`b75e01d`](https://github.com/try-once-more/shop/commit/b75e01d5486be5ae67be0f15c98a2d6fb1fdc46c)
+
 ## v1.0.6 - 2023-09-16
 
 ### Added
