@@ -10,6 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
+## v1.0.8 - 2023-10-28
+
+### Added
+
+- Order model and validationMessages [`b3e22e1`](https://github.com/try-once-more/shop/commit/b3e22e11239637ff3d7e73bbc0a8ad19cdc6339e)
+- ProcessOrderComponent form [`b3f6876`](https://github.com/try-once-more/shop/commit/b3f687658b28a0597e9288b6d25e3cf53b652426)
+- the ability to specify multiple phone numbers [`89cb20d`](https://github.com/try-once-more/shop/commit/89cb20d216967cdc17aeff9fb5b1fef3d8b1dcee)
+- EmailValidationDirective [`8e095db`](https://github.com/try-once-more/shop/commit/8e095dbd6bfa62ae1ce938dcc69c6d6c27c40ad9)
+- usernameValidator [`24101f1`](https://github.com/try-once-more/shop/commit/24101f1612a635175582102594a2f17930741bea)
+- ModelFormGroup&lt;T&gt; [`81e6d7a`](https://github.com/try-once-more/shop/commit/81e6d7a317c4c9164ef796c16aae010be8243e37)
+
+
+
 ## v1.0.7 - 2023-10-22
 
 ### Added
