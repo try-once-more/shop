@@ -1,12 +1,13 @@
 import { NgClass, NgIf } from "@angular/common";
 import { Component, OnInit, inject } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { EmailValidationDirective } from "src/app/shared/directives/email-validation.directive";
 
 @Component({
     selector: "app-process-order",
     standalone: true,
     templateUrl: "./process-order.component.html",
-    imports: [ReactiveFormsModule, NgIf, NgClass]
+    imports: [ReactiveFormsModule, NgIf, NgClass, EmailValidationDirective]
 })
 export class ProcessOrderComponent implements OnInit {
     orderForm!: FormGroup;
@@ -19,7 +20,7 @@ export class ProcessOrderComponent implements OnInit {
         this.orderForm = this.formBuilder.group({
             firstName: ["", [Validators.required, Validators.pattern(upperCasePattern)]],
             lastName: [""],
-            email: ["", [Validators.required, Validators.email]],
+            email: ["", [Validators.required]],
             phone: [""],
             delivery: [this.showDeliveryAddress],
             address: [""]
