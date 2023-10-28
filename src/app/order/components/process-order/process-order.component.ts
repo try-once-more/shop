@@ -1,8 +1,11 @@
 import { NgClass, NgForOf, NgIf } from "@angular/common";
-import { Component, OnInit, inject } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Component, OnInit } from "@angular/core";
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { EmailValidationDirective } from "src/app/shared/directives/email-validation.directive";
 import { usernameValidator } from "./username-validators";
+import { validationMessages } from "./validation-messages";
+import { Order } from "../../models/order.model";
+import { ModelFormGroup } from "src/app/shared/model-form-group.type";
 
 @Component({
     selector: "app-process-order",
@@ -11,49 +14,55 @@ import { usernameValidator } from "./username-validators";
     imports: [ReactiveFormsModule, NgIf, NgForOf, NgClass, EmailValidationDirective]
 })
 export class ProcessOrderComponent implements OnInit {
-    orderForm!: FormGroup;
-    showDeliveryAddress = false;
+    orderForm!: ModelFormGroup<Order>;
 
-    private readonly formBuilder = inject(FormBuilder);
+    ngOnInit(): void {
+        this.orderForm = new FormGroup({
+            firstName: new FormControl("", {
+                nonNullable: true,
+                validators: [Validators.required, usernameValidator]
+            }),
+            lastName: new FormControl("", { nonNullable: true }),
+            email: new FormControl("", {
+                nonNullable: true,
+                validators: [Validators.required]
+            }),
+            phoneNumbers: new FormArray([new FormControl("", { nonNullable: true })]),
+            delivery: new FormControl(false, { nonNullable: true }),
+            address: new FormControl("", { nonNullable: true }),
+        });
 
-    get phoneNumbers(): FormArray {
-        return this.orderForm.get("phoneNumbers") as FormArray;
-    }
-
-    ngOnInit() {
-        this.orderForm = this.formBuilder.group({
-            firstName: ["", [Validators.required, usernameValidator]],
-            lastName: [""],
-            email: ["", [Validators.required]],
-            phoneNumbers: this.formBuilder.array([
-                this.formBuilder.control("")
-            ]),
-            delivery: [this.showDeliveryAddress],
-            address: [""]
+        this.orderForm.controls.delivery.valueChanges.subscribe(delivery => {
+            const addressControl = this.orderForm.controls.address;
+            if (delivery) {
+                addressControl.setValidators([Validators.required]);
+            } else {
+                addressControl.clearValidators();
+                addressControl.setValue("");
+            }
         });
     }
 
-    toggleDelivery() {
-        this.showDeliveryAddress = !this.showDeliveryAddress;
+    getErrorMessage(controlName: keyof typeof validationMessages): string | null {
+        const control = this.orderForm.controls[controlName];
+        const errors = control.errors;
+        const messages = validationMessages[controlName];
 
-        if (!this.showDeliveryAddress) {
-            this.orderForm.value.address.clearValidators();
-            this.orderForm.value.address.setValue("");
-        } else {
-            this.orderForm.value.address.setValidators([Validators.required]);
-        }
+        return control.invalid && errors && messages
+            ? Object.keys(errors).map(errorKey => messages[errorKey]).join("; ")
+            : null;
     }
 
     addPhone(): void {
-        const phoneControl = this.formBuilder.control("");
-        this.phoneNumbers.push(phoneControl);
+        const phoneControl = new FormControl("", { nonNullable: true });
+        this.orderForm.controls.phoneNumbers.push(phoneControl);
     }
 
     removePhone(index: number): void {
-        this.phoneNumbers.removeAt(index);
+        this.orderForm.controls.phoneNumbers.removeAt(index);
     }
 
-    submitOrder() {
+    submitOrder(): void {
         if (this.orderForm.valid) {
             //TODO: Add submit order
             console.log("Submitted!", this.orderForm.value);

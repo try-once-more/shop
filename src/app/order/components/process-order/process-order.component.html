@@ -6,11 +6,10 @@
             id="firstName"
             formControlName="firstName"
             class="form-control"
-            [ngClass]="{'is-invalid': orderForm.get('firstName')!.invalid && orderForm.get('firstName')!.touched}"
+            [ngClass]="{'is-invalid': orderForm.controls.firstName.invalid && orderForm.controls.firstName.touched}"
         >
-        <div class="invalid-feedback"
-            *ngIf="orderForm.get('firstName')!.invalid && orderForm.get('firstName')!.touched">
-            First name is required and must start with an uppercase letter.
+        <div *ngIf="getErrorMessage('firstName') as message" class="invalid-feedback">
+            {{message}}
         </div>
     </div>
 
@@ -26,20 +25,21 @@
             id="email"
             formControlName="email"
             class="form-control"
-            [ngClass]="{'is-invalid': orderForm.get('email')!.invalid && orderForm.get('email')!.touched}">
-        <div class="invalid-feedback" *ngIf="orderForm.get('email')!.invalid && orderForm.get('email')!.touched">
-            Please enter a valid email address.
+            [ngClass]="{'is-invalid': orderForm.controls.email.invalid && orderForm.controls.email.touched}"
+        >
+        <div *ngIf="getErrorMessage('email') as message" class="invalid-feedback">
+            {{message}}
         </div>
     </div>
 
     <div formArrayName="phoneNumbers">
-        <div class="form-group" *ngFor="let phone of phoneNumbers.controls; let i = index">
+        <div class="form-group" *ngFor="let phone of this.orderForm.controls.phoneNumbers.controls; let i = index">
             <label for="Phone{{i+1}}">Phone {{ i + 1 }}:</label>
             <div class="input-group">
                 <input type="text" id="Phone{{i+1}}" formControlName="{{i}}" class="form-control">
                 <div class="input-group-append">
                     <button type="button"
-                        [disabled]="phoneNumbers.controls.length == 1"
+                        [disabled]="this.orderForm.controls.phoneNumbers.controls.length == 1"
                         class="btn btn-danger"
                         (click)="removePhone(i)">
                         Remove
@@ -51,24 +51,24 @@
     </div>
 
     <div class="form-check my-2">
-        <input type="checkbox"
+        <input #showDelivery
+            type="checkbox"
             id="delivery"
             formControlName="delivery"
             class="form-check-input"
-            (change)="toggleDelivery()"
         >
         <label class="form-check-label" for="delivery">Pickup</label>
     </div>
 
-    <div *ngIf="showDeliveryAddress" class="form-group">
+    <div *ngIf="showDelivery.checked" class="form-group">
         <label for="address">Delivery Address:</label>
         <textarea id="address"
             formControlName="address"
             class="form-control"
-            [ngClass]="{'is-invalid': orderForm.get('address')!.invalid && orderForm.get('address')!.touched}">
+            [ngClass]="{'is-invalid': orderForm.controls.address.invalid && orderForm.controls.address.touched}">
         </textarea>
-        <div class="invalid-feedback" *ngIf="orderForm.get('address')!.invalid && orderForm.get('address')!.touched">
-            Delivery address is required if delivery is selected.
+        <div *ngIf="getErrorMessage('address') as message" class="invalid-feedback">
+            {{message}}
         </div>
     </div>
 
