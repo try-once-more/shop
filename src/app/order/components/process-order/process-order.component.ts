@@ -2,6 +2,7 @@ import { NgClass, NgIf } from "@angular/common";
 import { Component, OnInit, inject } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { EmailValidationDirective } from "src/app/shared/directives/email-validation.directive";
+import { usernameValidator } from "./username-validators";
 
 @Component({
     selector: "app-process-order",
@@ -16,9 +17,8 @@ export class ProcessOrderComponent implements OnInit {
     private readonly formBuilder = inject(FormBuilder);
 
     ngOnInit() {
-        const upperCasePattern = /^\p{Lu}/u; //Any uppercase Unicode letter as the first character.
         this.orderForm = this.formBuilder.group({
-            firstName: ["", [Validators.required, Validators.pattern(upperCasePattern)]],
+            firstName: ["", [Validators.required, usernameValidator]],
             lastName: [""],
             email: ["", [Validators.required]],
             phone: [""],
