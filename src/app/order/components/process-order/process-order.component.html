@@ -1,4 +1,5 @@
 <form [formGroup]="orderForm" (ngSubmit)="submitOrder()" class="m-4">
+
     <div class="form-group">
         <label for="firstName">First Name:</label>
         <input type="text"
@@ -12,10 +13,12 @@
             First name is required and must start with an uppercase letter.
         </div>
     </div>
+
     <div class="form-group">
         <label for="lastName">Last Name:</label>
         <input type="text" id="lastName" formControlName="lastName" class="form-control">
     </div>
+
     <div class="form-group">
         <label for="email">Email:</label>
         <input appEmailValidation
@@ -28,10 +31,25 @@
             Please enter a valid email address.
         </div>
     </div>
-    <div class="form-group">
-        <label for="phone">Phone:</label>
-        <input type="text" id="phone" formControlName="phone" class="form-control">
+
+    <div formArrayName="phoneNumbers">
+        <div class="form-group" *ngFor="let phone of phoneNumbers.controls; let i = index">
+            <label for="Phone{{i+1}}">Phone {{ i + 1 }}:</label>
+            <div class="input-group">
+                <input type="text" id="Phone{{i+1}}" formControlName="{{i}}" class="form-control">
+                <div class="input-group-append">
+                    <button type="button"
+                        [disabled]="phoneNumbers.controls.length == 1"
+                        class="btn btn-danger"
+                        (click)="removePhone(i)">
+                        Remove
+                    </button>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary my-2" (click)="addPhone()">Add Phone</button>
     </div>
+
     <div class="form-check my-2">
         <input type="checkbox"
             id="delivery"
@@ -41,6 +59,7 @@
         >
         <label class="form-check-label" for="delivery">Pickup</label>
     </div>
+
     <div *ngIf="showDeliveryAddress" class="form-group">
         <label for="address">Delivery Address:</label>
         <textarea id="address"
@@ -52,6 +71,7 @@
             Delivery address is required if delivery is selected.
         </div>
     </div>
+
     <button type="submit" [disabled]="orderForm.invalid" class="btn btn-primary my-2">
         Complete Order
     </button>
