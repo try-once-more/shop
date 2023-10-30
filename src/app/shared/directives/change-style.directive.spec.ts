@@ -1,31 +1,62 @@
-/* tslint:disable:no-unused-variable */
-
-import { ComponentFixture, TestBed, async } from "@angular/core/testing";
+import { TestBed, ComponentFixtureAutoDetect } from "@angular/core/testing";
+import { Component, DebugElement } from "@angular/core";
+import { By } from "@angular/platform-browser";
 import { ChangeStyleDirective } from "./change-style.directive";
-import { Component, ElementRef, Renderer2 } from "@angular/core";
 
 @Component({
-    template: '<div appChangeStyle>Click me to change style</div>'
+    template: `
+    <div appChangeStyle [border]="borderValue" #targetElement>Sample Element</div>
+  `
 })
 class TestComponent { }
 
-describe("Directive: ChangeStyle", () => {
-    let fixture: ComponentFixture<TestComponent>;
-    let element: HTMLElement;
-    let renderer: Renderer2;
+describe("ChangeStyleDirective", () => {
+    let targetElement: DebugElement;
+    let directive: ChangeStyleDirective;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
-            declarations: [ChangeStyleDirective, TestComponent]
-        }).compileComponents();
-        fixture = TestBed.createComponent(TestComponent);
-        element = fixture.nativeElement.querySelector('div');
-        renderer = TestBed.inject(Renderer2);
-        fixture.detectChanges();
-    }));
+            imports: [ChangeStyleDirective],
+            declarations: [TestComponent],
+            providers: [{ provide: ComponentFixtureAutoDetect, useValue: true }]
+        });
 
-    it('should create an instance', () => {
-        const directive = new ChangeStyleDirective(new ElementRef(element), renderer);
+        const fixture = TestBed.createComponent(TestComponent);
+        targetElement = fixture.debugElement.query(By.css("[appChangeStyle]"));
+        directive = targetElement.injector.get(ChangeStyleDirective);
+    });
+
+    it("should create an instance", () => {
         expect(directive).toBeTruthy();
+    });
+
+    it("should toggle border on Ctrl+click", () => {
+        const initialBorder = targetElement.nativeElement.style.border;
+
+        targetElement.triggerEventHandler("click", { ctrlKey: true });
+        expect(targetElement.nativeElement.style.border).toBeFalsy();
+
+        targetElement.triggerEventHandler("click", { ctrlKey: true });
+        expect(targetElement.nativeElement.style.border).toBe(initialBorder);
+    });
+
+    it("should change font size on Ctrl+scroll", () => {
+        const initialFontSize = parseInt(getComputedStyle(targetElement.nativeElement).fontSize, 10);
+
+        targetElement.triggerEventHandler("wheel", { deltaMode: 0, deltaY: -1, ctrlKey: true, preventDefault: () => { } });
+        const newFontSize = parseInt(getComputedStyle(targetElement.nativeElement).fontSize, 10);
+        expect(newFontSize).toBe(initialFontSize + 2);
+
+        targetElement.triggerEventHandler("wheel", { deltaMode: 0, deltaY: 1, ctrlKey: true, preventDefault: () => { } });
+        const restoredFontSize = parseInt(getComputedStyle(targetElement.nativeElement).fontSize, 10);
+        expect(restoredFontSize).toBe(initialFontSize);
+    });
+
+    it("should not change font size on scroll without Ctrl", () => {
+        const initialFontSize = parseInt(getComputedStyle(targetElement.nativeElement).fontSize, 10);
+
+        targetElement.triggerEventHandler("wheel", { deltaMode: 0, deltaY: -1, ctrlKey: false });
+        const newFontSize = parseInt(getComputedStyle(targetElement.nativeElement).fontSize, 10);
+        expect(newFontSize).toBe(initialFontSize);
     });
 });
